@@ -5,6 +5,15 @@ import express from 'express';
 
 const artistsRouter = express.Router();
 
+artistsRouter.get('/', async (req, res, next) => {
+  try {
+    const artist = await Artist.find();
+    return res.send(artist);
+  } catch (e) {
+    next(e);
+  }
+});
+
 artistsRouter.post('/', imagesUpload.single('image'), async (req, res, next) => {
   try {
     const artistMutation = {
@@ -21,15 +30,6 @@ artistsRouter.post('/', imagesUpload.single('image'), async (req, res, next) => 
     if (e instanceof mongoose.Error.ValidationError) {
       return res.status(400).send(e);
     }
-    next(e);
-  }
-});
-
-artistsRouter.get('/', async (req, res, next) => {
-  try {
-    const artist = await Artist.find();
-    return res.send(artist);
-  } catch (e) {
     next(e);
   }
 });

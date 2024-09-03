@@ -4,6 +4,21 @@ import Track from "../models/Track";
 
 const tracksRouter = Router();
 
+tracksRouter.get('/', async (req, res, next) => {
+  try {
+    let album;
+
+    if (req.query.album) {
+      album =  await Track.find({album: req.query.album}).populate('album');
+    } else {
+      album = await Track.find();
+    }
+    return res.send(album);
+  } catch (e) {
+    next(e);
+  }
+});
+
 tracksRouter.post('/', async (req, res, next) => {
   try {
     const trackMutation = {
@@ -18,17 +33,8 @@ tracksRouter.post('/', async (req, res, next) => {
     res.send(track);
   } catch (e) {
     if (e instanceof mongoose.Error.ValidationError) {
-      return res.status(422).send(e);
+      return res.status(400).send(e);
     }
-    next(e);
-  }
-});
-
-tracksRouter.get('/', async (req, res, next) => {
-  try {
-    const track = await Track.find();
-    return res.send(track);
-  } catch (e) {
     next(e);
   }
 });
