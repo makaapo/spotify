@@ -1,9 +1,9 @@
-import {Router} from 'express';
+import express from 'express';
 import {imagesUpload} from "../multer";
 import mongoose from "mongoose";
 import Album from "../models/Album";
 
-const albumsRouter = Router();
+const albumsRouter= express.Router();
 
 albumsRouter.get('/', async (req, res, next) => {
   try {
