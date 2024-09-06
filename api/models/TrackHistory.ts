@@ -1,8 +1,10 @@
 import mongoose, {Schema, Types} from 'mongoose';
 import User from "./User";
 import Track from "./Track";
+import {randomUUID} from 'node:crypto';
+import {TrackHistoryFields, TrackHistoryMethods, TrackHistoryModel} from '../types';
 
-const TrackHistorySchema = new mongoose.Schema({
+const TrackHistorySchema = new Schema<TrackHistoryFields, TrackHistoryModel, TrackHistoryMethods>({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -32,8 +34,16 @@ const TrackHistorySchema = new mongoose.Schema({
     type: Date,
     default: () => new Date(),
   },
+  token: {
+    type: String,
+    required: true,
+  }
 });
 
-const TrackHistory = mongoose.model('TrackHistory', TrackHistorySchema);
+TrackHistorySchema.methods.generateToken = function () {
+  this.token = randomUUID();
+};
+
+const TrackHistory = mongoose.model<TrackHistoryFields, TrackHistoryModel>('TrackHistory', TrackHistorySchema);
 
 export default TrackHistory;

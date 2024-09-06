@@ -1,4 +1,4 @@
-import {Model} from 'mongoose';
+import {Model, Types} from 'mongoose';
 
 export interface UserFields {
   username: string;
@@ -12,3 +12,16 @@ export interface UserMethods {
 }
 
 export type UserModel = Model<UserFields, {}, UserMethods>;
+
+export interface TrackHistoryFields {
+  user: Types.ObjectId;
+  track: Types.ObjectId;
+  datetime: Date;
+  token: string;
+}
+
+export interface TrackHistoryMethods {
+  generateToken(): void;
+}
+
+export type TrackHistoryModel = Model<TrackHistoryFields, {}, TrackHistoryMethods>;

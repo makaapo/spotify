@@ -1,12 +1,45 @@
 import express from 'express';
 import mongoose from "mongoose";
 import TrackHistory from "../models/TrackHistory";
+import User from '../models/User';
+import Track from '../models/Track';
 
 const trackHistoryRouter = express.Router();
 
 trackHistoryRouter.get('/', async (req, res, next) => {
   try {
-    const trackHistory = await TrackHistory.find();
+    const headers = req.get('Authorization');
+
+    if (!headers) {
+      return res.status(401).send({error: 'Header "Authorization" not found'});
+    }
+
+    const [_bearer, token] = headers.split(' ');
+
+    if (!token) {
+      return res.status(401).send({error: 'Token not found'});
+    }
+
+    const user = await User.findOne({ token });
+
+    if(!user) {
+      return res.status(401).send({error: 'Wrong Token!'})
+    }
+
+    let track;
+    if (req.query.trackId) {
+      track = await Track.findOne({ _id: req.query.trackId });
+      if (!track) {
+        return res.status(404).send({error: 'Track not found'});
+      }
+    }
+
+    let trackHistory;
+    if (track) {
+      trackHistory = await TrackHistory.find({user: user._id, track: track._id});
+    } else {
+      trackHistory = await TrackHistory.find({user: user._id});
+    }
     return res.send(trackHistory);
   } catch (e) {
     next(e);
@@ -14,14 +47,33 @@ trackHistoryRouter.get('/', async (req, res, next) => {
 });
 
 trackHistoryRouter.post('/', async (req, res, next) => {
-
   try {
-    const trackHistoryData = {
-      user: req.body.user,
+    const header = req.get('Authorization');
+
+    if (!header) {
+      return res.status(401).send({error: 'Header "Authorization" not found'});
+    }
+
+    const [_bearer, token] = header.split(' ');
+
+    if (!token) {
+      return res.status(401).send({error: 'Token not found'});
+    }
+
+    const user = await User.findOne({ token });
+
+    if(!user) {
+      return res.status(401).send({error: 'Wrong Token!'});
+    }
+
+    const trackHistory = new TrackHistory({
+      user: user._id,
       track: req.body.track,
-      datetime: req.body.datetime,
-    };
-    const trackHistory = new TrackHistory(trackHistoryData);
+      datetime: new Date().toISOString(),
+    });
+
+    trackHistory.generateToken();
+
     await trackHistory.save();
     res.send(trackHistory);
   } catch (e) {
