@@ -20,7 +20,7 @@ const AlbumSchema = new mongoose.Schema({
     unique: true,
   },
   release: {
-    type: String,
+    type: Number,
     required: true,
   },
   image: String,
