@@ -1,6 +1,6 @@
 import express from 'express';
 import {imagesUpload} from "../multer";
-import mongoose from "mongoose";
+import mongoose, {Types} from 'mongoose';
 import Album from "../models/Album";
 
 const albumsRouter= express.Router();
@@ -16,6 +16,26 @@ albumsRouter.get('/', async (req, res, next) => {
     }
 
     return res.send(artist);
+  } catch (e) {
+    next(e);
+  }
+});
+
+albumsRouter.get('/:id', async (req, res, next) => {
+  try {
+    let _id;
+    try {
+      _id = new Types.ObjectId(req.params.id);
+    } catch {
+      return res.status(400).send({error: 'Wrong Id!'});
+    }
+    const album = await Album.findById(_id).populate('artist');
+
+    if (!album) {
+      return res.status(404).send({error: 'Not found!'});
+    }
+
+    res.send(album);
   } catch (e) {
     next(e);
   }
