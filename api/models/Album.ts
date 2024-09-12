@@ -11,7 +11,7 @@ const AlbumSchema = new mongoose.Schema({
         const artist = await Artist.findById(value);
         return Boolean(artist);
       },
-      message: 'Artist does not exist',
+      message: 'Artists does not exist',
     }
   },
   title: {

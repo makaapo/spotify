@@ -17,8 +17,8 @@ const corsOptions: CorsOptions = {
 
 const config = {
   rootPath,
-  corsOptions,
   publicPath: path.join(rootPath, 'public'),
+  corsOptions,
   database: 'mongodb://localhost/mySpotify',
 };
 
