@@ -1,16 +1,16 @@
 import React from 'react';
 import {Card, CardMedia, CardActionArea, Typography, Box} from '@mui/material';
 import {NavLink} from 'react-router-dom';
-import {Artist} from '../../types';
+import {Album} from '../../types';
 import {API_URL} from '../../contans';
 import NoArtistImage from '../../assets/noartistimage.webp';
 
 interface Props {
-  artist: Artist;
+  album: Album;
 }
 
-const ArtistCard: React.FC<Props> = ({artist}) => {
-  const cardImage = artist.image ? `${API_URL}/${artist.image}` : NoArtistImage;
+const AlbumCard: React.FC<Props> = ({album}) => {
+  const cardImage = album.image ? `${API_URL}/${album.image}` : NoArtistImage;
 
   return (
     <Card
@@ -22,7 +22,7 @@ const ArtistCard: React.FC<Props> = ({artist}) => {
     >
       <CardActionArea
         component={NavLink}
-        to={`/albums/${artist._id}`}
+        to={`/tracks/${album._id}?artist=${album.artist._id}`}
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -32,7 +32,7 @@ const ArtistCard: React.FC<Props> = ({artist}) => {
         <CardMedia
           component="img"
           image={cardImage}
-          alt={artist.title}
+          alt={album.title}
           sx={{
             width: 80,
             height: 80,
@@ -49,9 +49,15 @@ const ArtistCard: React.FC<Props> = ({artist}) => {
         >
           <Typography
             variant="h6"
-            sx={{fontWeight: 'bold'}}
+            sx={{ fontWeight: 'bold' }}
           >
-            {artist.title}
+            {album.title}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+          >
+            {album.release}
           </Typography>
         </Box>
       </CardActionArea>
@@ -59,4 +65,4 @@ const ArtistCard: React.FC<Props> = ({artist}) => {
   );
 };
 
-export default ArtistCard;
+export default AlbumCard;

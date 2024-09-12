@@ -9,3 +9,10 @@ export const getArtists = createAsyncThunk<Artist[]>(
     const {data: artist} = await axiosApi.get<Artist[]>('/artists');
     return artist;
   });
+
+export const getArtistById = createAsyncThunk<Artist, string>(
+  'artists/get-by-id',
+  async (artistId) => {
+  const {data: artist} = await axiosApi.get<Artist>((`/artists/${artistId}`));
+  return artist;
+});

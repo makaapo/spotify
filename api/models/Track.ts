@@ -11,7 +11,7 @@ const TrackSchema = new mongoose.Schema({
         const album = await Album.findById(value);
         return Boolean(album);
       },
-      message: 'Album does not exist',
+      message: 'Albums does not exist',
     }
   },
   title: {

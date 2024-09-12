@@ -17,7 +17,7 @@ const run = async () => {
     console.log('Skipping drop...');
   }
 
-  const [Eminem, E50Cent] = await Artist.create(
+  const [Scrip, Yankee] = await Artist.create(
     {
       title: "Scriptonit",
       image: 'fixtures/scrip.jpeg'
@@ -30,26 +30,26 @@ const run = async () => {
 
   const [ScripAlbum1, ScripAlbum2, YankeeAlbum1, YankeeAlbum2] = await Album.create(
     {
-      title: "The Marshall Mathers LP",
-      artist: Eminem._id,
-      release: 2000,
-      image: "fixtures/artist1_album1_pic.jpeg"
+      title: "Дом с нормальными явлениями",
+      artist: Scrip._id,
+      release: 2015,
+      image: "fixtures/scripAlbum1.jpeg"
     }, {
-      title: "Recovery",
-      artist: Eminem._id,
-      release: 2010,
-      image: "fixtures/artist1_album2_pic.jpeg"
+      title: "Уроборос: Улица 36",
+      artist: Scrip._id,
+      release: 2017,
+      image: "fixtures/scripAlbum2.jpeg"
     },
     {
-      title: "Get Rich or Die Tryin",
-      artist: E50Cent._id,
-      release: 2003,
-      image: "fixtures/artist2_album1_pic.jpeg"
+      title: "Talento de Barrio",
+      artist: Yankee._id,
+      release: 2008,
+      image: "fixtures/yankeeAlbum1.jpeg"
     }, {
-      title: "The Massacre",
-      artist: E50Cent._id,
-      release: 2005,
-      image: "fixtures/artist2_album2_pic.jpeg"
+      title: "Legendaddy",
+      artist: Yankee._id,
+      release: 2023,
+      image: "fixtures/yankeeAlbum2.jpeg"
     },
   );
 

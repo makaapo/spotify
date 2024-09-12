@@ -14,6 +14,20 @@ artistsRouter.get('/', async (req, res, next) => {
   }
 });
 
+artistsRouter.get('/:id', async (req, res, next) => {
+  try {
+    if (!req.params.id) {
+      res.status(400).send({error: 'Wrong Id!'});
+    }
+
+    const artist = await Artist.findById(req.params.id);
+    return res.send(artist);
+  } catch (e) {
+    next(e);
+  }
+});
+
+
 artistsRouter.post('/', imagesUpload.single('image'), async (req, res, next) => {
   try {
     const artistMutation = {
