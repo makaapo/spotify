@@ -1,11 +1,11 @@
-import {Grid} from '@mui/material';
+import Artists from '../Artists/Artists';
 
 const Home = () => {
 
   return (
-    <Grid container spacing={2}>
-      Music
-    </Grid>
+    <>
+      <Artists/>
+    </>
   );
 };
 
