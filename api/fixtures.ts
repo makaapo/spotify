@@ -4,7 +4,6 @@ import Artist from "./models/Artist";
 import Album from "./models/Album";
 import Track from "./models/Track";
 
-
 const run = async () => {
   await mongoose.connect(config.database);
   const db = mongoose.connection;

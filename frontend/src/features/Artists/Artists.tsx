@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {getArtists} from './artistsThunks';
 import {CircularProgress, Grid, Typography, Box} from '@mui/material';
-import ArtistCard from '../../components/ArtistCard/ArtistCard';
+import ArtistCard from './components/ArtistCard/ArtistCard';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {selectArtists, selectArtistsFetching} from './artistsSlice';
 

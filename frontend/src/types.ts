@@ -9,6 +9,14 @@ export interface Album {
   _id: string;
   artist: Artist;
   title: string;
-  release: string;
+  release: number;
   image: string;
+}
+
+export interface Track {
+  _id: string;
+  album: string;
+  title: string;
+  duration: string;
+  number: number;
 }

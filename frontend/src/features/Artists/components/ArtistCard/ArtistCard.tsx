@@ -1,16 +1,16 @@
 import React from 'react';
 import {Card, CardMedia, CardActionArea, Typography, Box} from '@mui/material';
 import {NavLink} from 'react-router-dom';
-import {Album} from '../../types';
-import {API_URL} from '../../contans';
-import NoArtistImage from '../../assets/noartistimage.webp';
+import {Artist} from '../../../../types';
+import {API_URL} from '../../../../contans';
+import NoArtistImage from '../../../../assets/noartistimage.webp';
 
 interface Props {
-  album: Album;
+  artist: Artist;
 }
 
-const AlbumCard: React.FC<Props> = ({album}) => {
-  const cardImage = album.image ? `${API_URL}/${album.image}` : NoArtistImage;
+const ArtistCard: React.FC<Props> = ({artist}) => {
+  const cardImage = artist.image ? `${API_URL}/${artist.image}` : NoArtistImage;
 
   return (
     <Card
@@ -18,11 +18,12 @@ const AlbumCard: React.FC<Props> = ({album}) => {
         display: 'flex',
         alignItems: 'center',
         width: '100%',
+        boxShadow: '8',
       }}
     >
       <CardActionArea
         component={NavLink}
-        to={`/tracks/${album._id}?artist=${album.artist._id}`}
+        to={`/albums/${artist._id}`}
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -32,7 +33,7 @@ const AlbumCard: React.FC<Props> = ({album}) => {
         <CardMedia
           component="img"
           image={cardImage}
-          alt={album.title}
+          alt={artist.title}
           sx={{
             width: 80,
             height: 80,
@@ -49,15 +50,9 @@ const AlbumCard: React.FC<Props> = ({album}) => {
         >
           <Typography
             variant="h6"
-            sx={{ fontWeight: 'bold' }}
+            sx={{fontWeight: 'bold'}}
           >
-            {album.title}
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-          >
-            {album.release}
+            {artist.title}
           </Typography>
         </Box>
       </CardActionArea>
@@ -65,4 +60,4 @@ const AlbumCard: React.FC<Props> = ({album}) => {
   );
 };
 
-export default AlbumCard;
+export default ArtistCard;

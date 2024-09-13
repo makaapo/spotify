@@ -4,7 +4,7 @@ import {getAlbumsByArtist} from './albumThunks';
 import {getArtistById} from '../Artists/artistsThunks';
 import {selectArtistsFetching, selectOneArtist} from '../Artists/artistsSlice';
 import {selectAlbums, selectAlbumsFetching} from './albumSlice';
-import AlbumCard from '../../components/AlbumCard/AlbumCard';
+import AlbumCard from './components/AlbumCard/AlbumCard';
 import {Box, CircularProgress, Grid, Typography} from '@mui/material';
 import {useParams} from 'react-router-dom';
 
@@ -39,7 +39,8 @@ const Albums: React.FC = () => {
         <Box>
           <Typography
             textAlign="center"
-            variant="h4" component="h1"
+            variant="h4"
+            component="h1"
             mb='3'>
             Artist: {artistOfAlbum ? artistOfAlbum.title : "Not found"}
           </Typography>
