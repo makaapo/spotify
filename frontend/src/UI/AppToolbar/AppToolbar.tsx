@@ -1,5 +1,5 @@
-import {AppBar, Grid, styled, Toolbar, Typography} from '@mui/material';
-import {Link} from 'react-router-dom';
+import {AppBar, Button, Grid, styled, Toolbar, Typography} from '@mui/material';
+import {Link, NavLink} from 'react-router-dom';
 
 const StyledLink = styled(Link)({
   color: 'inherit',
@@ -17,6 +17,9 @@ const AppToolbar = () => {
           <Typography variant="h4" component="div" sx={{flexGrow: 1}}>
             <StyledLink to="/">Spotify</StyledLink>
           </Typography>
+          <Button component={NavLink} to="/register" color="inherit">
+            Sign up
+          </Button>
         </Grid>
       </Toolbar>
     </AppBar>
