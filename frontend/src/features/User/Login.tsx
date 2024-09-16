@@ -1,27 +1,24 @@
-import React, { useState } from 'react';
-import {Avatar, Box, Button, Grid, TextField, Typography, Link, CircularProgress} from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import React, {useState} from 'react';
+import {Alert, Avatar, Box, Button, CircularProgress, Grid, Link, TextField, Typography} from '@mui/material';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import {Link as RouterLink, useNavigate} from 'react-router-dom';
+import {LoginMutation} from '../../types';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
-import {RegisterMutation} from '../../types';
-import {register} from './usersThunks';
-import {selectRegisterError, selectRegisterLoading} from './usersSlice';
+import {selectLoginError, selectLoginLoading} from './usersSlice';
+import {login} from './usersThunks';
 
 
-const Register = () => {
+const Login = () => {
   const dispatch = useAppDispatch();
+  const error = useAppSelector(selectLoginError)
   const navigate = useNavigate();
-  const error = useAppSelector(selectRegisterError);
-  const isCreating = useAppSelector(selectRegisterLoading);
+  const isLoading = useAppSelector(selectLoginLoading);
 
-  const [state, setState] = useState<RegisterMutation>({
+  const [state, setState] = useState<LoginMutation>({
     username: '',
     password: '',
   });
 
-  const getFieldError = (fieldName: string) => {
-    return error?.errors[fieldName]?.message;
-  };
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -33,12 +30,8 @@ const Register = () => {
 
   const submitFormHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    try {
-      await dispatch(register(state)).unwrap();
-      navigate('/');
-    } catch (e) {
-      // error happened
-    }
+    await dispatch(login(state)).unwrap();
+    navigate('/');
   };
 
   return (
@@ -51,23 +44,26 @@ const Register = () => {
       }}
     >
       <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-        <LockOutlinedIcon />
+        <LockOpenIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
-        Sign up
+        Sign in
       </Typography>
-      <Box component="form" noValidate onSubmit={submitFormHandler} sx={{ mt: 3 }}>
+      {error && (
+        <Alert severity="error" sx={{mt: 3}}>
+          {error.error}
+        </Alert>
+      )}
+      <Box component="form" onSubmit={submitFormHandler} sx={{ mt: 3 }}>
         <Grid container direction="column" spacing={2}>
           <Grid item>
             <TextField
               required
               label="Username"
               name="username"
-              autoComplete="new-username"
+              autoComplete="current-username"
               value={state.username}
               onChange={inputChangeHandler}
-              error={Boolean(getFieldError('username'))}
-              helperText={getFieldError('username')}
             />
           </Grid>
           <Grid item>
@@ -76,23 +72,21 @@ const Register = () => {
               type="password"
               label="Password"
               name="password"
-              autoComplete="new-password"
+              autoComplete="current-password"
               value={state.password}
               onChange={inputChangeHandler}
-              error={Boolean(getFieldError('password'))}
-              helperText={getFieldError('password')}
             />
           </Grid>
         </Grid>
         <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-          {isCreating ? <CircularProgress size={24}/> : 'Sign up'}
+          {isLoading ? <CircularProgress size={24}/> : 'Sign in'}
         </Button>
-        <Link component={RouterLink} to="/login" variant="body2">
-          Already have an account? Sign in
+        <Link component={RouterLink} to="/register" variant="body2">
+          Or sign up?
         </Link>
       </Box>
     </Box>
   );
 };
 
-export default Register;
+export default Login;

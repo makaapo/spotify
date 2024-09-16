@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, {HydratedDocument} from 'mongoose';
 import bcrypt from 'bcrypt';
 
 import {randomUUID} from 'crypto';
@@ -15,6 +15,9 @@ const UserSchema = new Schema<UserFields, UserModel, UserMethods>({
     unique: true,
     validate: {
       validator: async function(value: string): Promise<boolean> {
+        if (!(this as HydratedDocument<UserFields>).isModified('username')) {
+          return true;
+        }
         const user = await User.findOne({username: value});
         return !user;
       },

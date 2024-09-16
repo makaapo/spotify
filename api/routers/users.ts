@@ -34,12 +34,12 @@ usersRouter.post('/sessions', async (req, res, next) => {
     const user = await User.findOne({username: req.body.username});
 
     if (!user) {
-      return res.status(422).send({error: 'Username not found!'});
+      return res.status(400).send({error: 'Username not found!'});
     }
     const isMatch = await user.checkPassword(req.body.password)
 
     if (!isMatch) {
-      return res.status(422).send({error: 'Password not found!'});
+      return res.status(400).send({error: 'Password not found!'});
     }
 
     user.generateToken();
