@@ -26,25 +26,27 @@ usersRouter.post('/', async (req, res, next) => {
   }
 });
 usersRouter.post('/sessions', async (req, res, next) => {
-
   try {
     if (!req.body.username || !req.body.password) {
       return res.status(400).send({ error: 'Username and password are required!' });
     }
-    const user = await User.findOne({username: req.body.username});
+
+    const user = await User.findOne({ username: req.body.username });
 
     if (!user) {
-      return res.status(400).send({error: 'Username not found!'});
+      return res.status(400).send({ error: 'Username not found!' });
     }
-    const isMatch = await user.checkPassword(req.body.password)
+
+    const isMatch = await user.checkPassword(req.body.password);
 
     if (!isMatch) {
-      return res.status(400).send({error: 'Password not found!'});
+      return res.status(400).send({ error: 'Password not found!' });
     }
 
     user.generateToken();
     await user.save();
-    return res.send({message: 'Username and password are correct!', user});
+
+    return res.send(user);
   } catch (e) {
     next(e);
   }

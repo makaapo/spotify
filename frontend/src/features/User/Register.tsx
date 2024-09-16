@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Avatar, Box, Button, Grid, TextField, Typography, Link, CircularProgress} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {RegisterMutation} from '../../types';
 import {register} from './usersThunks';
@@ -37,7 +37,7 @@ const Register = () => {
       await dispatch(register(state)).unwrap();
       navigate('/');
     } catch (e) {
-      // error happened
+      console.error('Login error:', e);
     }
   };
 

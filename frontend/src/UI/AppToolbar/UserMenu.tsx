@@ -24,6 +24,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
       </Button>
       <Menu open={isOpen} anchorEl={anchorEl} onClose={handleClose} keepMounted>
         <MenuItem>Track History</MenuItem>
+        <MenuItem>Log out</MenuItem>
       </Menu>
     </Grid>
   );
