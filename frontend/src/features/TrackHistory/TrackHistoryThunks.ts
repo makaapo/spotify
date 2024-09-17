@@ -10,7 +10,7 @@ export const postTrackToHistory = createAsyncThunk<void, string, {state: RootSta
     const token = state?.users?.user?.token;
     if (token) {
       await axiosApi.post(`track-history`, {track: id}, {
-        headers: { 'Authorization': `Bearer ${token}` },
+        headers: {'Authorization': `Bearer ${token}`},
       });
     }
   }
