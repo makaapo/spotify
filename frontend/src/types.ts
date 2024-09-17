@@ -15,7 +15,7 @@ export interface Album {
 
 export interface Track {
   _id: string;
-  album: string;
+  album: Album;
   title: string;
   duration: string;
   number: number;
@@ -51,4 +51,12 @@ export interface ValidationError {
 
 export interface GlobalError {
   error: string;
+}
+
+export interface TrackHistory {
+  _id: string;
+  user: User;
+  datetime: string;
+  track: Track;
+  artist: Artist;
 }
