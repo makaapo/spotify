@@ -21,7 +21,7 @@ const Login = () => {
 
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+    const {name, value} = event.target;
     setState((prevState) => ({
       ...prevState,
       [name]: value,
@@ -47,7 +47,7 @@ const Login = () => {
         alignItems: 'center',
       }}
     >
-      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+      <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
         <LockOpenIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
@@ -82,11 +82,11 @@ const Login = () => {
             />
           </Grid>
         </Grid>
-        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+        <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} disabled={isLoading}>
           {isLoading ? <CircularProgress size={24}/> : 'Sign in'}
         </Button>
         <Link component={RouterLink} to="/register" variant="body2">
-          Or sign up?
+          Don't have an account? Sign up.
         </Link>
       </Box>
     </Box>
