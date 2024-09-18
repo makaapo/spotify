@@ -25,6 +25,7 @@ tracksRouter.post('/', async (req, res, next) => {
       title: req.body.title,
       album: req.body.album,
       duration: req.body.duration,
+      number: parseFloat(req.body.number),
     };
 
     const track = new Track(trackMutation);
