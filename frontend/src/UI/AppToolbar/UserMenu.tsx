@@ -3,6 +3,9 @@ import React, {useState} from 'react';
 import {Button, Grid, Menu, MenuItem} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import RestoreIcon from '@mui/icons-material/Restore';
+import {logout} from '../../features/User/usersThunks';
+import LogoutIcon from '@mui/icons-material/Logout';
+import {useAppDispatch} from '../../app/hooks';
 
 interface Props {
   user: User;
@@ -10,6 +13,7 @@ interface Props {
 
 const UserMenu: React.FC<Props> = ({user}) => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isOpen= Boolean(anchorEl)
 
@@ -20,6 +24,11 @@ const UserMenu: React.FC<Props> = ({user}) => {
   const handleClose = () => {
     setAnchorEl(null);
   }
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
     <Grid item>
       <Button onClick={handleClick} color="inherit">
@@ -29,6 +38,10 @@ const UserMenu: React.FC<Props> = ({user}) => {
         <MenuItem onClick={() => navigate('/track-history')}>
           <RestoreIcon sx={{mr: 2}} />
           Track History
+        </MenuItem>
+        <MenuItem onClick={handleLogout}>
+          <LogoutIcon sx={{mr: 2}} />
+          Logout
         </MenuItem>
       </Menu>
     </Grid>

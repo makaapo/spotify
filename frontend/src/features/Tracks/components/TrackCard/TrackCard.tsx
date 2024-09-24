@@ -1,8 +1,8 @@
 import React from 'react';
 import {Card, CircularProgress, Grid, IconButton, Typography} from '@mui/material';
 import {Track} from '../../../../types';
-import {useAppDispatch, useAppSelector} from '../../../../app/hooks';
-import {postTrackToHistory} from '../../../TrackHistory/TrackHistoryThunks';
+import {useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import {postTrackToHistory } from '../../../TrackHistory/TrackHistoryThunks';
 import {selectUser} from '../../../User/usersSlice';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import {selectAddTrackHistory} from '../../../TrackHistory/TrackHistorySlice';
@@ -11,7 +11,7 @@ interface Props {
   track: Track;
 }
 
-const TrackCard: React.FC<Props> = ({track}) => {
+const TrackCard: React.FC<Props> = ({ track }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const isAddingTrackHistory = useAppSelector(selectAddTrackHistory);
@@ -55,7 +55,8 @@ const TrackCard: React.FC<Props> = ({track}) => {
           <Typography
             variant="h6"
             component="h5"
-            sx={{fontWeight: 'bold'}}>
+            sx={{ fontWeight: 'bold' }}
+          >
             #{track.number} - {track.title}
           </Typography>
         </Grid>
@@ -63,17 +64,20 @@ const TrackCard: React.FC<Props> = ({track}) => {
           <Typography
             variant="body2"
             color="text.secondary"
-            sx={{mt: 1}}>
+            sx={{ mt: 1 }}
+          >
             Duration: {track.duration}
           </Typography>
         </Grid>
         <Grid item>
-          {isAddingTrackHistory === track._id ? (
-            <CircularProgress size={30} />
-          ) : (
-            <IconButton onClick={() => clickHandler(track._id)}>
-              <PlayCircleIcon sx={{ color: 'seagreen', fontSize: 40 }} />
-            </IconButton>
+          {user && (
+            isAddingTrackHistory === track._id ? (
+              <CircularProgress size={30} />
+            ) : (
+              <IconButton onClick={() => clickHandler(track._id)}>
+                <PlayCircleIcon sx={{color: 'seagreen', fontSize: 40}} />
+              </IconButton>
+            )
           )}
         </Grid>
       </Grid>

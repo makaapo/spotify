@@ -1,34 +1,17 @@
 import express from 'express';
 import mongoose from "mongoose";
 import TrackHistory from "../models/TrackHistory";
-import User from '../models/User';
 import Track from '../models/Track';
+import auth, {RequestWithUser} from '../middleware/auth';
 
 const trackHistoryRouter = express.Router();
 
 
-trackHistoryRouter.post('/', async (req, res, next) => {
+trackHistoryRouter.post('/', auth, async (req: RequestWithUser, res, next) => {
   try {
-    const header = req.get('Authorization');
-
-    if (!header) {
-      return res.status(401).send({error: 'Header "Authorization" not found'});
-    }
-
-    const [_bearer, token] = header.split(' ');
-
-    if (!token) {
-      return res.status(401).send({error: 'Token not found'});
-    }
-
-    const user = await User.findOne({ token });
-
-    if(!user) {
-      return res.status(401).send({error: 'Wrong Token!'});
-    }
 
     const trackHistory = new TrackHistory({
-      user: user._id,
+      user: req.user?._id,
       track: req.body.track,
       datetime: new Date().toISOString(),
     });
@@ -45,20 +28,8 @@ trackHistoryRouter.post('/', async (req, res, next) => {
   }
 });
 
-trackHistoryRouter.get('/', async (req, res, next) => {
-  const header = req.get('Authorization');
-
-  const token = header && header.split(' ')[1];
+trackHistoryRouter.get('/', auth, async (req: RequestWithUser, res, next) => {
   try {
-    if (!token) {
-      return res.status(401).send({error: "No token present"});
-    }
-
-    const user = await User.findOne({token});
-
-    if(!user) {
-      return res.status(401).send({error: 'Wrong token'})
-    }
 
     let track;
 
@@ -71,9 +42,9 @@ trackHistoryRouter.get('/', async (req, res, next) => {
 
     let trackHistory;
     if (track) {
-      trackHistory = await TrackHistory.find({user: user._id, track: track._id});
+      trackHistory = await TrackHistory.find({user: req.user?._id, track: track._id});
     } else {
-      trackHistory = await TrackHistory.find({user: user._id})
+      trackHistory = await TrackHistory.find({user: req.user?._id})
         .populate( {
           path: 'track',
           populate: {
