@@ -2,6 +2,8 @@ import express from 'express';
 import {imagesUpload} from "../multer";
 import mongoose, {Types} from 'mongoose';
 import Album from "../models/Album";
+import auth, {RequestWithUser} from '../middleware/auth';
+import permit from '../middleware/permit';
 
 const albumsRouter= express.Router();
 
@@ -23,6 +25,7 @@ albumsRouter.get('/', async (req, res, next) => {
 
 albumsRouter.get('/:id', async (req, res, next) => {
   try {
+
     let _id;
     try {
       _id = new Types.ObjectId(req.params.id);
@@ -41,17 +44,16 @@ albumsRouter.get('/:id', async (req, res, next) => {
   }
 });
 
-albumsRouter.post('/', imagesUpload.single('image'), async (req, res, next) => {
+albumsRouter.post('/', auth, permit('admin', 'user'), imagesUpload.single('image'),
+  async (req: RequestWithUser, res, next) => {
   try {
-    const albumMutation = {
+    const album = Album.create({
+      user: req.user?._id,
       title: req.body.title,
       artist: req.body.artist,
       release: req.body.release,
       image: req.file ? req.file.filename : null,
-    };
-
-    const album = new Album(albumMutation);
-    await album.save();
+    });
 
     res.send(album);
   } catch (e) {
@@ -61,5 +63,34 @@ albumsRouter.post('/', imagesUpload.single('image'), async (req, res, next) => {
     next(e);
   }
 });
+
+albumsRouter.delete('/:id', auth, permit('admin', 'user'),
+  async (req: RequestWithUser, res, next) => {
+    try {
+      if (!req.user?._id) {
+        return res.status(400).send({error: 'User ID is wrong!'});
+      }
+      const _id = req.params.id;
+
+      if (req.user) {
+        const isAdmin = req.user?.role === 'admin';
+        const isUser = req.user?.role === 'user';
+
+        if (isAdmin) {
+          await Album.findByIdAndDelete(_id);
+          return res.send({message: 'Album was deleted by admin'});
+        } else if (isUser) {
+          await Album.findOneAndDelete({_id, user: req.user?._id, isPublished: false});
+          return res.send({message: 'Album was deleted by user'});
+        }
+      } else {
+        return res.status(403).send({error: 'Forbidden! You do not have permission to delete!'});
+      }
+    } catch (e) {
+      next(e);
+    }
+  },
+);
+
 
 export default albumsRouter

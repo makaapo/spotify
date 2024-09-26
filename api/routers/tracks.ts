@@ -1,6 +1,8 @@
 import express from 'express';
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 import Track from "../models/Track";
+import auth, {RequestWithUser} from '../middleware/auth';
+import permit from '../middleware/permit';
 
 const tracksRouter = express.Router();
 
@@ -19,17 +21,16 @@ tracksRouter.get('/', async (req, res, next) => {
   }
 });
 
-tracksRouter.post('/', async (req, res, next) => {
+tracksRouter.post('/', auth, permit('admin', 'user'),
+  async (req: RequestWithUser, res, next) => {
   try {
-    const trackMutation = {
+    const track = Track.create( {
+      user: req.user?._id,
       title: req.body.title,
       album: req.body.album,
       duration: req.body.duration,
       number: parseFloat(req.body.number),
-    };
-
-    const track = new Track(trackMutation);
-    await track.save();
+    });
 
     res.send(track);
   } catch (e) {
@@ -39,5 +40,34 @@ tracksRouter.post('/', async (req, res, next) => {
     next(e);
   }
 });
+
+tracksRouter.delete('/:id', auth, permit('admin', 'user'),
+  async (req: RequestWithUser, res, next) => {
+    try {
+      if (!req.user?._id) {
+        return res.status(400).send({error: 'User ID is wrong!'});
+      }
+
+      const _id = req.params.id;
+
+      if (req.user) {
+        const isAdmin = req.user?.role === 'admin';
+        const isUser = req.user?.role === 'user';
+
+        if (isAdmin) {
+          await Track.findByIdAndDelete(_id);
+          return res.send({message: 'Track was deleted by admin'});
+        } else if (isUser) {
+          await Track.findOneAndDelete({_id, user: req.user?._id, isPublished: false});
+          return res.send({message: 'Track was deleted by user'});
+        }
+      } else {
+        return res.status(403).send({error: 'Forbidden! You do not have permission to delete!'});
+      }
+    } catch (e) {
+      next(e);
+    }
+  },
+);
 
 export default tracksRouter
