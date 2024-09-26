@@ -70,4 +70,26 @@ tracksRouter.delete('/:id', auth, permit('admin', 'user'),
   },
 );
 
+tracksRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res, next) => {
+  try {
+    if (!req.params._id) {
+      return res.status(400).send({error: 'Wrong track ID'});
+    }
+
+    const track = await Track.findById(req.params._id);
+
+    if (!track) {
+      return res.status(404).send({error: 'Track not found'});
+    }
+
+    track.isPublished = !track.isPublished;
+
+    await track.save();
+
+    return res.send(track);
+  } catch (e) {
+    return next(e);
+  }
+});
+
 export default tracksRouter
