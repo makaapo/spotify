@@ -1,7 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import axiosApi from '../../axiosApi';
-import {Track, TrackMutation, ValidationError} from '../../types';
-import {isAxiosError} from 'axios';
+import {Track, TrackMutation} from '../../types';
 
 
 export const getTracksByAlbum = createAsyncThunk<Track[], string>(
@@ -12,17 +11,9 @@ export const getTracksByAlbum = createAsyncThunk<Track[], string>(
   }
 );
 
-export const createTrack = createAsyncThunk<void, TrackMutation, {rejectValue: ValidationError}
->('tracks/create', async (trackMutation, {rejectWithValue}) => {
-  try {
+export const createTrack = createAsyncThunk<void, TrackMutation>
+('tracks/create', async (trackMutation) => {
     await axiosApi.post('/tracks', trackMutation);
-  } catch (e) {
-    if (isAxiosError(e) && e.response && e.response.status === 400) {
-      return rejectWithValue(e.response.data);
-    }
-
-    throw e;
-  }
 });
 
 export const publishTrack = createAsyncThunk<void, string>(

@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {Track, ValidationError} from '../../types';
+import {Track} from '../../types';
 import {createTrack, deleteTrack, getTracksByAlbum, publishTrack} from './tracksThunks';
 
 
@@ -9,7 +9,6 @@ interface tracksState {
   publishLoading: boolean;
   deleteLoading: boolean;
   createLoading: boolean;
-  createError: ValidationError | null;
 }
 
 const initialState: tracksState = {
@@ -18,7 +17,6 @@ const initialState: tracksState = {
   publishLoading: false,
   deleteLoading: false,
   createLoading: false,
-  createError: null,
 };
 
 const TracksSlice = createSlice({
@@ -60,14 +58,12 @@ const TracksSlice = createSlice({
 
     builder
       .addCase(createTrack.pending, (state) => {
-        state.createError = null;
         state.createLoading = true;
       })
       .addCase(createTrack.fulfilled, (state) => {
         state.createLoading = false;
       })
-      .addCase(createTrack.rejected, (state, {payload: error}) => {
-        state.createError = error || null;
+      .addCase(createTrack.rejected, (state) => {
         state.createLoading = false;
       });
   },
@@ -77,7 +73,6 @@ const TracksSlice = createSlice({
     selectTrackPublishLoading: state => state.publishLoading,
     selectTrackDeleteLoading: state => state.deleteLoading,
     selectTrackCreateLoading: state => state.createLoading,
-    selectTrackCreateError: state => state.createError,
   },
 });
 
@@ -90,6 +85,5 @@ export const {
   selectTrackPublishLoading,
   selectTrackDeleteLoading,
   selectTrackCreateLoading,
-  selectTrackCreateError
 
 } = TracksSlice.selectors;

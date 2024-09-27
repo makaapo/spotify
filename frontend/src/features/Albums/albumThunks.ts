@@ -1,7 +1,6 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi';
-import {Album, AlbumMutation, ValidationError} from '../../types';
-import {isAxiosError} from 'axios';
+import {Album, AlbumMutation} from '../../types';
 
 export const getAlbumsByArtist = createAsyncThunk<Album[], string>(
   'albums/get-by-artist',
@@ -11,9 +10,8 @@ export const getAlbumsByArtist = createAsyncThunk<Album[], string>(
   }
 );
 
-export const createAlbum = createAsyncThunk<void, AlbumMutation, {rejectValue: ValidationError}
->('artists/create', async (albumMutation, {rejectWithValue}) => {
-  try {
+export const createAlbum = createAsyncThunk<void, AlbumMutation>
+('artists/create', async (albumMutation) => {
     const formData = new FormData();
 
     formData.append('artist', albumMutation.artist);
@@ -25,13 +23,6 @@ export const createAlbum = createAsyncThunk<void, AlbumMutation, {rejectValue: V
     }
 
     await axiosApi.post('albums', formData);
-  } catch (e) {
-    if (isAxiosError(e) && e.response && e.response.status === 400) {
-      return rejectWithValue(e.response.data);
-    }
-
-    throw e;
-  }
 });
 
 export const publishAlbum = createAsyncThunk<void, string>(

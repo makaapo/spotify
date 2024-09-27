@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {Artist, ValidationError} from '../../types';
+import {Artist} from '../../types';
 import {createArtist, deleteArtist, getArtistById, getArtists, publishArtist} from './artistsThunks';
 
 export interface artistsState {
@@ -9,7 +9,6 @@ export interface artistsState {
   publishLoading: boolean;
   deleteLoading: boolean;
   createLoading: boolean;
-  createError: ValidationError | null;
 }
 
 const initialState: artistsState = {
@@ -19,7 +18,6 @@ const initialState: artistsState = {
   publishLoading: false,
   deleteLoading: false,
   createLoading: false,
-  createError: null,
 };
 
 const ArtistsSlice = createSlice({
@@ -72,14 +70,12 @@ const ArtistsSlice = createSlice({
 
     builder
       .addCase(createArtist.pending, (state) => {
-        state.createError = null;
         state.createLoading = true;
       })
       .addCase(createArtist.fulfilled, (state) => {
         state.createLoading = false;
       })
-      .addCase(createArtist.rejected, (state, {payload: error }) => {
-        state.createError = error || null;
+      .addCase(createArtist.rejected, (state) => {
         state.createLoading = false;
       });
   },
@@ -90,7 +86,6 @@ const ArtistsSlice = createSlice({
     selectArtistPublishLoading: state => state.publishLoading,
     selectArtistDeleteLoading: state => state.deleteLoading,
     selectArtistCreateLoading: state => state.createLoading,
-    selectArtistCreateError: state => state.createError,
   },
 });
 
@@ -104,7 +99,6 @@ export const {
   selectArtistPublishLoading,
   selectArtistDeleteLoading,
   selectArtistCreateLoading,
-  selectArtistCreateError
 
 
 } = ArtistsSlice.selectors;

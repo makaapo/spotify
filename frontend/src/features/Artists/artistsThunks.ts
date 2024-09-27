@@ -1,7 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import axiosApi from '../../axiosApi';
-import {Artist, ArtistMutation, ValidationError} from '../../types';
-import {isAxiosError} from 'axios';
+import {Artist, ArtistMutation} from '../../types';
 
 
 export const getArtists = createAsyncThunk<Artist[]>(
@@ -18,9 +17,8 @@ export const getArtistById = createAsyncThunk<Artist, string>(
   return artist;
 });
 
-export const createArtist = createAsyncThunk<void, ArtistMutation, {rejectValue: ValidationError}
->('artists/create', async (artistMutation, { rejectWithValue }) => {
-  try {
+export const createArtist = createAsyncThunk<void, ArtistMutation>
+('artists/create', async (artistMutation) => {
     const formData = new FormData();
 
     formData.append('title', artistMutation.title);
@@ -31,13 +29,6 @@ export const createArtist = createAsyncThunk<void, ArtistMutation, {rejectValue:
     }
 
     await axiosApi.post('/artists', formData);
-  } catch (e) {
-    if (isAxiosError(e) && e.response && e.response.status === 400) {
-      return rejectWithValue(e.response.data);
-    }
-
-    throw e;
-  }
 });
 
 export const publishArtist = createAsyncThunk<void, string>(

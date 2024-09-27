@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {Album, ValidationError} from '../../types';
+import {Album} from '../../types';
 import {createAlbum, deleteAlbum, getAlbumsByArtist, publishAlbum} from './albumThunks';
 
 export interface albumsState {
@@ -8,7 +8,6 @@ export interface albumsState {
   publishLoading: boolean;
   deleteLoading: boolean;
   createLoading: boolean;
-  createError: ValidationError | null;
 }
 
 const initialState: albumsState = {
@@ -17,7 +16,6 @@ const initialState: albumsState = {
   publishLoading: false,
   deleteLoading: false,
   createLoading: false,
-  createError: null,
 };
 
 
@@ -59,14 +57,12 @@ const AlbumsSlice = createSlice({
       });
     builder
       .addCase(createAlbum.pending, (state) => {
-        state.createError = null;
         state.createLoading = true;
       })
       .addCase(createAlbum.fulfilled, (state) => {
         state.createLoading = false;
       })
-      .addCase(createAlbum.rejected, (state, {payload: error}) => {
-        state.createError = error || null;
+      .addCase(createAlbum.rejected, (state) => {
         state.createLoading = false;
       });
   },
@@ -76,7 +72,6 @@ const AlbumsSlice = createSlice({
     selectAlbumPublishLoading: (state) => state.publishLoading,
     selectAlbumDeleteLoading: (state) => state.deleteLoading,
     selectAlbumCreateLoading: (state) => state.createLoading,
-    selectAlbumCreateError: (state) => state.createError,
   },
 });
 
@@ -90,6 +85,5 @@ export const {
   selectAlbumPublishLoading,
   selectAlbumDeleteLoading,
   selectAlbumCreateLoading,
-  selectAlbumCreateError
 
 } = AlbumsSlice.selectors;

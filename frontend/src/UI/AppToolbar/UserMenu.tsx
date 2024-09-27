@@ -6,6 +6,9 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import {logout} from '../../features/User/usersThunks';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {useAppDispatch} from '../../app/hooks';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
+import SpatialAudioOffIcon from '@mui/icons-material/SpatialAudioOff';
 import {getArtists} from '../../features/Artists/artistsThunks';
 
 interface Props {
@@ -37,6 +40,18 @@ const UserMenu: React.FC<Props> = ({user}) => {
         Hello, {user.username}!
       </Button>
       <Menu open={isOpen} anchorEl={anchorEl} onClose={handleClose} keepMounted>
+        <MenuItem onClick={() => navigate('/track/new')}>
+          <MusicNoteIcon sx={{mr: 2}} />
+          New Track
+        </MenuItem>
+        <MenuItem onClick={() => navigate('/album/new')}>
+          <LibraryMusicIcon sx={{mr: 2}} />
+          New Album
+        </MenuItem>
+        <MenuItem onClick={() => navigate('/artist/new')}>
+          <SpatialAudioOffIcon sx={{mr: 2}} />
+          New Artist
+        </MenuItem>
         <MenuItem onClick={() => navigate('/track-history')}>
           <RestoreIcon sx={{mr: 2}} />
           Track History

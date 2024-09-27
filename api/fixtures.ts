@@ -230,7 +230,8 @@ const run = async () => {
       title: "Campeón",
       album: YankeeAlbum2._id,
       duration: "0:41",
-      number: 1
+      number: 1,
+      isPublished: true,
     },
     {
       user: user2,
