@@ -1,17 +1,25 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {Artist} from '../../types';
-import {getArtistById, getArtists} from './artistsThunks';
+import {Artist, ValidationError} from '../../types';
+import {createArtist, deleteArtist, getArtistById, getArtists, publishArtist} from './artistsThunks';
 
 export interface artistsState {
   artists: Artist[];
   artist: Artist | null;
   isLoading: boolean;
+  publishLoading: boolean;
+  deleteLoading: boolean;
+  createLoading: boolean;
+  createError: ValidationError | null;
 }
 
 const initialState: artistsState = {
   artists: [],
   artist: null,
   isLoading: false,
+  publishLoading: false,
+  deleteLoading: false,
+  createLoading: false,
+  createError: null,
 };
 
 const ArtistsSlice = createSlice({
@@ -29,6 +37,7 @@ const ArtistsSlice = createSlice({
     builder.addCase(getArtists.rejected, (state) => {
       state.isLoading = false;
     });
+
     builder.addCase(getArtistById.pending, (state) => {
       state.isLoading = true;
     });
@@ -39,11 +48,49 @@ const ArtistsSlice = createSlice({
     builder.addCase(getArtistById.rejected, (state) => {
       state.isLoading = false;
     });
+    builder
+      .addCase(publishArtist.pending, (state) => {
+        state.publishLoading = true;
+      })
+      .addCase(publishArtist.fulfilled, (state) => {
+        state.publishLoading = false;
+      })
+      .addCase(publishArtist.rejected, (state) => {
+        state.publishLoading = false;
+      });
+
+    builder
+      .addCase(deleteArtist.pending, (state) => {
+        state.deleteLoading = true;
+      })
+      .addCase(deleteArtist.fulfilled, (state) => {
+        state.deleteLoading = false;
+      })
+      .addCase(deleteArtist.rejected, (state) => {
+        state.deleteLoading = false;
+      });
+
+    builder
+      .addCase(createArtist.pending, (state) => {
+        state.createError = null;
+        state.createLoading = true;
+      })
+      .addCase(createArtist.fulfilled, (state) => {
+        state.createLoading = false;
+      })
+      .addCase(createArtist.rejected, (state, {payload: error }) => {
+        state.createError = error || null;
+        state.createLoading = false;
+      });
   },
   selectors: {
     selectArtists: (state) => state.artists,
     selectArtistsFetching: (state) => state.isLoading,
     selectOneArtist: state => state.artist,
+    selectArtistPublishLoading: state => state.publishLoading,
+    selectArtistDeleteLoading: state => state.deleteLoading,
+    selectArtistCreateLoading: state => state.createLoading,
+    selectArtistCreateError: state => state.createError,
   },
 });
 
@@ -53,7 +100,11 @@ export const ArtistsReducer = ArtistsSlice.reducer;
 export const {
   selectArtists,
   selectArtistsFetching,
-  selectOneArtist
+  selectOneArtist,
+  selectArtistPublishLoading,
+  selectArtistDeleteLoading,
+  selectArtistCreateLoading,
+  selectArtistCreateError
 
 
 } = ArtistsSlice.selectors;

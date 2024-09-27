@@ -3,6 +3,13 @@ export interface Artist {
   title: string;
   description: string;
   image: string;
+  isPublished: boolean;
+}
+
+export interface ArtistMutation {
+  title: string;
+  description: string;
+  image: File | null;
 }
 
 export interface Album {
@@ -11,11 +18,27 @@ export interface Album {
   title: string;
   release: number;
   image: string;
+  isPublished: boolean;
+}
+
+export interface AlbumMutation {
+  artist: string;
+  title: string;
+  release: string;
+  image: File | null;
 }
 
 export interface Track {
   _id: string;
   album: Album;
+  title: string;
+  duration: string;
+  number: number;
+  isPublished: boolean;
+}
+
+export interface TrackMutation {
+  album: string;
   title: string;
   duration: string;
   number: number;

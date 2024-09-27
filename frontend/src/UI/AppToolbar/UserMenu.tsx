@@ -6,6 +6,7 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import {logout} from '../../features/User/usersThunks';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {useAppDispatch} from '../../app/hooks';
+import {getArtists} from '../../features/Artists/artistsThunks';
 
 interface Props {
   user: User;
@@ -25,8 +26,9 @@ const UserMenu: React.FC<Props> = ({user}) => {
     setAnchorEl(null);
   }
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async () => {
+    await dispatch(logout());
+    await dispatch(getArtists());
   };
 
   return (
