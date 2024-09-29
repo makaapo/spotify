@@ -3,36 +3,69 @@ import mongoose from 'mongoose';
 import Track from "../models/Track";
 import auth, {RequestWithUser} from '../middleware/auth';
 import permit from '../middleware/permit';
+import roleForUser from '../middleware/roleForUser';
 
 const tracksRouter = express.Router();
 
-tracksRouter.get('/', async (req, res, next) => {
+tracksRouter.get('/', roleForUser, async (req: RequestWithUser, res, next) => {
   try {
-    let album;
+    let tracks;
 
-    if (req.query.album) {
-      album =  await Track.find({album: req.query.album}).populate('album').sort({number: 1});
+    if (req.user) {
+      const isAdmin = req.user.role === 'admin';
+      const isUser = req.user.role === 'user';
+
+      if (isAdmin) {
+        if (req.query.album) {
+          tracks = await Track.find({album: req.query.album}).populate('album').sort({number: 1});
+        } else {
+          tracks = await Track.find().sort({number: 1});
+        }
+      }
+
+      if (isUser) {
+        if (req.query.album) {
+          tracks = await Track.find({
+            album: req.query.album,
+            $or: [{isPublished: true }, {user: req.user._id, isPublished: false}],
+          }).populate('album').sort({number: 1});
+        } else {
+          tracks = await Track.find({
+            $or: [{isPublished: true }, {user: req.user._id, isPublished: false}],
+          }).sort({number: 1});
+        }
+      }
     } else {
-      album = await Track.find().sort({number: 1});
+      if (req.query.album) {
+        tracks = await Track.find({album: req.query.album, isPublished: true}).populate('album').sort({number: 1});
+      } else {
+        tracks = await Track.find({isPublished: true}).sort({number: 1});
+      }
     }
-    return res.send(album);
+
+    return res.send(tracks);
   } catch (e) {
     next(e);
   }
 });
 
-tracksRouter.post('/', auth, permit('admin', 'user'),
-  async (req: RequestWithUser, res, next) => {
+tracksRouter.post('/', auth, permit('admin', 'user'), async (req: RequestWithUser, res, next) => {
   try {
-    const track = Track.create( {
+    const trackNumber = parseFloat(req.body.number);
+
+    if (isNaN(trackNumber) || trackNumber <= 0) {
+      return res.status(400).send({error: 'Track number must be a positive number greater than zero'});
+    }
+
+    const track = await Track.create({
       user: req.user?._id,
       title: req.body.title,
       album: req.body.album,
       duration: req.body.duration,
-      number: parseFloat(req.body.number),
+      number: trackNumber,
     });
 
-    res.send(track);
+    return res.send(track);
   } catch (e) {
     if (e instanceof mongoose.Error.ValidationError) {
       return res.status(400).send(e);
@@ -72,11 +105,11 @@ tracksRouter.delete('/:id', auth, permit('admin', 'user'),
 
 tracksRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res, next) => {
   try {
-    if (!req.params._id) {
+    if (!req.params.id) {
       return res.status(400).send({error: 'Wrong track ID'});
     }
 
-    const track = await Track.findById(req.params._id);
+    const track = await Track.findById(req.params.id);
 
     if (!track) {
       return res.status(404).send({error: 'Track not found'});

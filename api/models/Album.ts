@@ -35,6 +35,12 @@ const AlbumSchema = new mongoose.Schema({
   release: {
     type: Number,
     required: true,
+    validate: {
+      validator: function(value: number) {
+        return value > 0;
+      },
+      message: 'Album release must be a positive number',
+    }
   },
   image: String,
   isPublished: {

@@ -4,22 +4,47 @@ import mongoose, {Types} from 'mongoose';
 import Album from "../models/Album";
 import auth, {RequestWithUser} from '../middleware/auth';
 import permit from '../middleware/permit';
+import roleForUser from '../middleware/roleForUser';
 
 const albumsRouter= express.Router();
 
-albumsRouter.get('/', async (req, res, next) => {
+albumsRouter.get('/', roleForUser, async (req: RequestWithUser, res, next) => {
   try {
-    let artist;
+    let albums;
+    const queryArtist = req.query.artist as string;
 
-    if (req.query.artist) {
-      artist =  await Album.find({artist: req.query.artist}).populate('artist').sort({release: -1});
+    if (req.user) {
+      const isAdmin = req.user.role === 'admin';
+      const isUser = req.user.role === 'user';
+
+      if (isAdmin) {
+        albums = await Album.find(
+          queryArtist ? { artist: queryArtist} : {},
+        )
+          .populate('artist')
+          .sort({release: -1});
+      }
+
+      if (isUser) {
+        albums = await Album.find({
+          artist: queryArtist,
+          $or: [{ isPublished: true }, {user: req.user._id, isPublished: false}],
+        })
+          .populate('artist')
+          .sort({release: -1});
+      }
     } else {
-      artist = await Album.find().populate('artist', 'title').sort({release: -1});
+      albums = await Album.find({
+        artist: queryArtist,
+        isPublished: true,
+      })
+        .populate('artist')
+        .sort({release: -1});
     }
 
-    return res.send(artist);
+    return res.send(albums);
   } catch (e) {
-    next(e);
+    return next(e);
   }
 });
 
@@ -47,11 +72,16 @@ albumsRouter.get('/:id', async (req, res, next) => {
 albumsRouter.post('/', auth, permit('admin', 'user'), imagesUpload.single('image'),
   async (req: RequestWithUser, res, next) => {
   try {
+    const releaseYear = parseFloat(req.body.release);
+
+    if (isNaN(releaseYear) || releaseYear <= 0) {
+      return res.status(400).send({error: 'Release year must be a positive number greater than zero'});
+    }
     const album = Album.create({
       user: req.user?._id,
       title: req.body.title,
       artist: req.body.artist,
-      release: req.body.release,
+      release: releaseYear,
       image: req.file ? req.file.filename : null,
     });
 
@@ -94,11 +124,11 @@ albumsRouter.delete('/:id', auth, permit('admin', 'user'),
 
 albumsRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res, next) => {
   try {
-    if (!req.params._id) {
+    if (!req.params.id) {
       return res.status(400).send({error: 'Wrong album ID'});
     }
 
-    const album = await Album.findById(req.params._id);
+    const album = await Album.findById(req.params.id);
 
     if (!album) {
       return res.status(404).send({error: 'Album not found'});

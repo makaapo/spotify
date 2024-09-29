@@ -4,15 +4,35 @@ import Artist from '../models/Artist';
 import express from 'express';
 import auth, {RequestWithUser} from '../middleware/auth';
 import permit from '../middleware/permit';
+import roleForUser from '../middleware/roleForUser';
 
 const artistsRouter = express.Router();
 
-artistsRouter.get('/', async (req, res, next) => {
+artistsRouter.get('/', roleForUser, async (req: RequestWithUser, res, next) => {
   try {
-    const artist = await Artist.find();
-    return res.send(artist);
+    let artists;
+    if (req.user) {
+      const isAdmin = req.user.role === 'admin';
+      const isUser = req.user.role === 'user';
+
+      if (isAdmin) {
+        artists = await Artist.find({}, {user: 0});
+      }
+
+      if (isUser) {
+        artists = await Artist.find(
+          {
+            $or: [{isPublished: true}, {user: req.user._id, isPublished: false}],
+          },
+          {user: 0 },
+        );
+      }
+    } else {
+      artists = await Artist.find({isPublished: true}, {user: 0});
+    }
+    return res.send(artists);
   } catch (e) {
-    next(e);
+    return next(e);
   }
 });
 
@@ -30,7 +50,7 @@ artistsRouter.get('/:id', async (req, res, next) => {
 });
 
 
-artistsRouter.post('/', imagesUpload.single('image'),
+artistsRouter.post('/',auth, permit('admin', 'user'), imagesUpload.single('image'),
   async (req: RequestWithUser, res, next) => {
   try {
     const artist = await Artist.create({
@@ -80,11 +100,10 @@ artistsRouter.delete('/:id', auth, permit('admin', 'user'),
 
 artistsRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, res, next) => {
   try {
-    if (!req.params._id) {
+    if (!req.params.id) {
       return res.status(400).send({error: 'Wrong artist ID'});
     }
-
-    const artist = await Artist.findById(req.params._id);
+    const artist = await Artist.findById(req.params.id);
 
     if (!artist) {
       return res.status(404).send({error: 'Artist not found'});
@@ -99,5 +118,6 @@ artistsRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req, r
     return next(e);
   }
 });
+
 
 export default artistsRouter

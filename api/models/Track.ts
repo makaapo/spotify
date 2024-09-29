@@ -38,6 +38,12 @@ const TrackSchema = new mongoose.Schema({
   number: {
     type: Number,
     required: true,
+    validate: {
+      validator: function(value: number) {
+        return value > 0;
+      },
+      message: 'Track number must be a positive number',
+    }
   },
   isPublished: {
     type: Boolean,
