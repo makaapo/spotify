@@ -17,11 +17,10 @@ const AlbumForm: React.FC<Props> = ({ onSubmit }) => {
   const dispatch = useAppDispatch();
   const artists = useAppSelector(selectArtists);
   const creating = useAppSelector(selectAlbumCreateLoading);
-
   const [state, setState] = useState<AlbumMutation>({
     artist: '',
     title: '',
-    release: '',
+    release: 1,
     image: null,
   });
 
@@ -31,7 +30,6 @@ const AlbumForm: React.FC<Props> = ({ onSubmit }) => {
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
-
     setState((prevState) => {
       return {...prevState, [name]: value};
     });
@@ -106,7 +104,6 @@ const AlbumForm: React.FC<Props> = ({ onSubmit }) => {
               onChange={fileInputChangeHandler}
             />
           </Grid>
-
           <Grid item xs={3} textAlign="right">
             <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} disabled={creating}>
               {creating ? <CircularProgress size={24}/> : 'Create Album'}

@@ -17,14 +17,12 @@ const TrackForm: React.FC<Props> = ({ onSubmit }) => {
   const artists = useAppSelector(selectArtists);
   const albums = useAppSelector(selectAlbums);
   const creating = useAppSelector(selectTrackCreateLoading);
-
   const [state, setState] = useState<TrackMutation>({
     album: '',
     title: '',
     duration: '',
     number: 1
   });
-
   const [artist, setArtist] = useState({
     title: '',
   });
@@ -39,7 +37,6 @@ const TrackForm: React.FC<Props> = ({ onSubmit }) => {
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
-
     setState((prevState) => {
       return {...prevState, [name]: value};
     });
@@ -47,7 +44,6 @@ const TrackForm: React.FC<Props> = ({ onSubmit }) => {
 
   const artistChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
-
     setArtist((prevState) => {
       return {...prevState, [name]: value};
     });
@@ -87,7 +83,6 @@ const TrackForm: React.FC<Props> = ({ onSubmit }) => {
               ))}
             </TextField>
           </Grid>
-
           <Grid item xs>
             <TextField
               select
@@ -122,7 +117,6 @@ const TrackForm: React.FC<Props> = ({ onSubmit }) => {
           </Grid>
           <Grid item>
             <TextField
-              required
               fullWidth
               label="Duration (mm:ss)"
               name="duration"
@@ -132,7 +126,6 @@ const TrackForm: React.FC<Props> = ({ onSubmit }) => {
               onChange={inputChangeHandler}
             />
           </Grid>
-
           <Grid item>
             <TextField
               required
@@ -144,7 +137,6 @@ const TrackForm: React.FC<Props> = ({ onSubmit }) => {
               onChange={inputChangeHandler}
             />
           </Grid>
-
           <Grid item xs={3} textAlign="right">
             <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} disabled={creating}>
               {creating ? <CircularProgress size={24}/> : 'Create Track'}

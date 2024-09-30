@@ -1,11 +1,14 @@
-import React from 'react';
-import {Card, CircularProgress, Grid, IconButton, Typography} from '@mui/material';
+import React, {useCallback} from 'react';
+import {Box, Card, CircularProgress, Grid, IconButton, Typography} from '@mui/material';
 import {Track} from '../../../../types';
 import {useAppDispatch, useAppSelector } from '../../../../app/hooks';
 import {postTrackToHistory } from '../../../TrackHistory/TrackHistoryThunks';
 import {selectUser} from '../../../User/usersSlice';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import {selectAddTrackHistory} from '../../../TrackHistory/TrackHistorySlice';
+import {selectTrackDeleteLoading, selectTrackPublishLoading} from '../../tracksSlice';
+import {deleteTrack, getTracksByAlbum, publishTrack} from '../../tracksThunks';
+import MenuCard from '../../../../components/MenuForUser/MenuCard/MenuCard';
 
 interface Props {
   track: Track;
@@ -13,6 +16,8 @@ interface Props {
 
 const TrackCard: React.FC<Props> = ({ track }) => {
   const dispatch = useAppDispatch();
+  const publishLoading = useAppSelector(selectTrackPublishLoading);
+  const deleteLoading = useAppSelector(selectTrackDeleteLoading);
   const user = useAppSelector(selectUser);
   const isAddingTrackHistory = useAppSelector(selectAddTrackHistory);
 
@@ -25,6 +30,16 @@ const TrackCard: React.FC<Props> = ({ track }) => {
       }
     }
   };
+
+  const onPublish = useCallback(async () => {
+    await dispatch(publishTrack(track._id));
+    await dispatch(getTracksByAlbum(track.album._id));
+  }, [dispatch]);
+
+  const onDelete = useCallback(async () => {
+    await dispatch(deleteTrack(track._id));
+    await dispatch(getTracksByAlbum(track.album._id));
+  }, [dispatch]);
 
   return (
     <Card
@@ -40,8 +55,25 @@ const TrackCard: React.FC<Props> = ({ track }) => {
         textAlign: 'center',
         height: '200px',
         boxShadow: 8,
+        position: 'relative',
       }}
     >
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 25,
+          right: 10,
+          zIndex: 1,
+        }}
+      >
+        <MenuCard
+          isPublishing={publishLoading}
+          isDeleting={deleteLoading}
+          isPublished={track.isPublished}
+          onDelete={onDelete}
+          onPublish={onPublish}
+        />
+      </Box>
       <Grid
         sx={{
           display: 'flex',

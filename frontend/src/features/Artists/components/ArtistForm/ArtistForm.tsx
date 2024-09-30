@@ -11,7 +11,6 @@ interface Props {
 
 const ArtistForm: React.FC<Props> = ({ onSubmit }) => {
   const creating = useAppSelector(selectArtistCreateLoading);
-
   const [state, setState] = useState<ArtistMutation>({
     title: '',
     description: '',
@@ -75,7 +74,6 @@ const ArtistForm: React.FC<Props> = ({ onSubmit }) => {
               onChange={fileInputChangeHandler}
             />
           </Grid>
-
           <Grid item xs={3} textAlign="right">
             <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} disabled={creating}>
               {creating ? <CircularProgress size={24}/> : 'Create Artist'}

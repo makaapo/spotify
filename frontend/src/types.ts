@@ -24,7 +24,7 @@ export interface Album {
 export interface AlbumMutation {
   artist: string;
   title: string;
-  release: string;
+  release: number;
   image: File | null;
 }
 
