@@ -1,6 +1,6 @@
 import path from 'path';
-import {CorsOptions} from 'cors';
-import {configDotenv} from 'dotenv';
+import { CorsOptions } from 'cors';
+import { configDotenv } from 'dotenv';
 
 configDotenv();
 
@@ -15,7 +15,7 @@ const corsOptions: CorsOptions = {
     } else {
       callback(new Error('Not allowed by CORS'));
     }
-  }
+  },
 };
 
 const config = {
@@ -26,7 +26,7 @@ const config = {
   google: {
     clientId: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  }
+  },
 };
 
 export default config;

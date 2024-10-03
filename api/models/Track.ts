@@ -1,5 +1,5 @@
-import mongoose, {Schema, Types} from 'mongoose';
-import Album from "./Album";
+import mongoose, { Schema, Types } from 'mongoose';
+import Album from './Album';
 import User from './User';
 
 const TrackSchema = new mongoose.Schema({
@@ -13,8 +13,9 @@ const TrackSchema = new mongoose.Schema({
         return Boolean(user);
       },
       message: 'User does not exist',
-    }
+    },
   },
+
   album: {
     type: Schema.Types.ObjectId,
     ref: 'Album',
@@ -25,7 +26,7 @@ const TrackSchema = new mongoose.Schema({
         return Boolean(album);
       },
       message: 'Albums does not exist',
-    }
+    },
   },
   title: {
     type: String,
@@ -39,11 +40,11 @@ const TrackSchema = new mongoose.Schema({
     type: Number,
     required: true,
     validate: {
-      validator: function(value: number) {
+      validator: function (value: number) {
         return value > 0;
       },
       message: 'Track number must be a positive number',
-    }
+    },
   },
   isPublished: {
     type: Boolean,

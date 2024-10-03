@@ -1,14 +1,14 @@
 import React from 'react';
-import {Divider, Grid, IconButton, Typography} from '@mui/material';
+import { Divider, Grid, IconButton, Typography } from '@mui/material';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import {TrackHistory} from '../../../types';
+import { TrackHistory } from '../../../types';
 import dayjs from 'dayjs';
 
 interface Props {
   trackHistory: TrackHistory;
 }
 
-const TrackHistoryCard: React.FC<Props> = ({trackHistory}) => {
+const TrackHistoryCard: React.FC<Props> = ({ trackHistory }) => {
   const date = dayjs(trackHistory.datetime).format('DD.MM.YYYY HH:mm:ss');
   const artistName = trackHistory.track.album.artist?.title;
 
@@ -17,7 +17,7 @@ const TrackHistoryCard: React.FC<Props> = ({trackHistory}) => {
       <Grid container alignItems="center" gap={3} py={2} pr={2}>
         <Grid item>
           <IconButton>
-            <PlayCircleIcon sx={{color: 'seagreen'}} />
+            <PlayCircleIcon sx={{ color: 'seagreen' }} />
           </IconButton>
         </Grid>
         <Grid item>

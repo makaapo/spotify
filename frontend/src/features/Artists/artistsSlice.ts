@@ -1,6 +1,6 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {Artist} from '../../types';
-import {createArtist, deleteArtist, getArtistById, getArtists, publishArtist} from './artistsThunks';
+import { createSlice } from '@reduxjs/toolkit';
+import { Artist } from '../../types';
+import { createArtist, deleteArtist, getArtistById, getArtists, publishArtist } from './artistsThunks';
 
 export interface artistsState {
   artists: Artist[];
@@ -28,7 +28,7 @@ const ArtistsSlice = createSlice({
     builder.addCase(getArtists.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(getArtists.fulfilled, (state, {payload: artists }) => {
+    builder.addCase(getArtists.fulfilled, (state, { payload: artists }) => {
       state.isLoading = false;
       state.artists = artists;
     });
@@ -39,7 +39,7 @@ const ArtistsSlice = createSlice({
     builder.addCase(getArtistById.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(getArtistById.fulfilled, (state, {payload: artist }) => {
+    builder.addCase(getArtistById.fulfilled, (state, { payload: artist }) => {
       state.isLoading = false;
       state.artist = artist;
     });
@@ -82,13 +82,12 @@ const ArtistsSlice = createSlice({
   selectors: {
     selectArtists: (state) => state.artists,
     selectArtistsFetching: (state) => state.isLoading,
-    selectOneArtist: state => state.artist,
-    selectArtistPublishLoading: state => state.publishLoading,
-    selectArtistDeleteLoading: state => state.deleteLoading,
-    selectArtistCreateLoading: state => state.createLoading,
+    selectOneArtist: (state) => state.artist,
+    selectArtistPublishLoading: (state) => state.publishLoading,
+    selectArtistDeleteLoading: (state) => state.deleteLoading,
+    selectArtistCreateLoading: (state) => state.createLoading,
   },
 });
-
 
 export const ArtistsReducer = ArtistsSlice.reducer;
 
@@ -99,6 +98,4 @@ export const {
   selectArtistPublishLoading,
   selectArtistDeleteLoading,
   selectArtistCreateLoading,
-
-
 } = ArtistsSlice.selectors;

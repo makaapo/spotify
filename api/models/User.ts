@@ -1,8 +1,7 @@
-import mongoose, {HydratedDocument} from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import bcrypt from 'bcrypt';
-
-import {randomUUID} from 'crypto';
-import {UserFields, UserMethods, UserModel} from '../types';
+import { randomUUID } from 'crypto';
+import { UserFields, UserMethods, UserModel } from '../types';
 
 const SALT_WORK_FACTOR = 10;
 
@@ -15,17 +14,18 @@ const UserSchema = new Schema<UserFields, UserModel, UserMethods>({
     unique: true,
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,5})+$/, 'Please fill a valid email address'],
     validate: {
-      validator: async function(value: string): Promise<boolean> {
+      validator: async function (value: string): Promise<boolean> {
         if (!(this as HydratedDocument<UserFields>).isModified('username')) {
           return true;
         }
 
-        const user = await User.findOne({username: value});
+        const user = await User.findOne({ username: value });
         return !user;
       },
       message: 'This user is already registered!',
-    }
+    },
   },
+
   password: {
     type: String,
     required: true,
@@ -54,11 +54,11 @@ UserSchema.methods.checkPassword = function (password: string) {
 
 UserSchema.methods.generateToken = function () {
   this.token = randomUUID();
-}
+};
 
 UserSchema.pre('save', async function (next) {
-  if(!this.isModified('password')) {
-    return next()
+  if (!this.isModified('password')) {
+    return next();
   }
 
   const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
@@ -71,9 +71,8 @@ UserSchema.set('toJSON', {
   transform: (_doc, ret) => {
     delete ret.password;
     return ret;
-  }
+  },
 });
-
 
 const User = mongoose.model<UserFields, UserModel>('User', UserSchema);
 export default User;

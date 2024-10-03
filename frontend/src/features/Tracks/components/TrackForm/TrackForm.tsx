@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {Box, Button, CircularProgress, Grid, MenuItem, TextField} from '@mui/material';
-import {TrackMutation} from '../../../../types';
-import {useAppDispatch, useAppSelector} from '../../../../app/hooks';
-import {selectArtists} from '../../../Artists/artistsSlice';
-import {selectAlbums} from '../../../Albums/albumSlice';
-import {selectTrackCreateLoading} from '../../tracksSlice';
-import {getArtists} from '../../../Artists/artistsThunks';
-import {getAlbumsByArtist} from '../../../Albums/albumThunks';
+import { Box, Button, CircularProgress, Grid, MenuItem, TextField } from '@mui/material';
+import { TrackMutation } from '../../../../types';
+import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import { selectArtists } from '../../../Artists/artistsSlice';
+import { selectAlbums } from '../../../Albums/albumSlice';
+import { selectTrackCreateLoading } from '../../tracksSlice';
+import { getArtists } from '../../../Artists/artistsThunks';
+import { getAlbumsByArtist } from '../../../Albums/albumThunks';
 
 interface Props {
   onSubmit: (state: TrackMutation) => void;
@@ -21,7 +21,7 @@ const TrackForm: React.FC<Props> = ({ onSubmit }) => {
     album: '',
     title: '',
     duration: '',
-    number: 1
+    number: 1,
   });
   const [artist, setArtist] = useState({
     title: '',
@@ -36,16 +36,16 @@ const TrackForm: React.FC<Props> = ({ onSubmit }) => {
   };
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     setState((prevState) => {
-      return {...prevState, [name]: value};
+      return { ...prevState, [name]: value };
     });
   };
 
   const artistChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     setArtist((prevState) => {
-      return {...prevState, [name]: value};
+      return { ...prevState, [name]: value };
     });
   };
 
@@ -73,11 +73,7 @@ const TrackForm: React.FC<Props> = ({ onSubmit }) => {
                 Please select a Artist
               </MenuItem>
               {artists.map((artist) => (
-                <MenuItem
-                  key={artist._id}
-                  value={artist._id}
-                  onClick={() => fetchAlbumsByArtist(artist._id)}
-                >
+                <MenuItem key={artist._id} value={artist._id} onClick={() => fetchAlbumsByArtist(artist._id)}>
                   {artist.title}
                 </MenuItem>
               ))}
@@ -97,11 +93,12 @@ const TrackForm: React.FC<Props> = ({ onSubmit }) => {
               <MenuItem value="" disabled>
                 Please select an album
               </MenuItem>
-              {albums && albums.map((album) => (
-                <MenuItem key={album._id} value={album._id}>
-                  {album.title}
-                </MenuItem>
-              ))}
+              {albums &&
+                albums.map((album) => (
+                  <MenuItem key={album._id} value={album._id}>
+                    {album.title}
+                  </MenuItem>
+                ))}
             </TextField>
           </Grid>
           <Grid item>
@@ -138,8 +135,8 @@ const TrackForm: React.FC<Props> = ({ onSubmit }) => {
             />
           </Grid>
           <Grid item xs={3} textAlign="right">
-            <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} disabled={creating}>
-              {creating ? <CircularProgress size={24}/> : 'Create Track'}
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={creating}>
+              {creating ? <CircularProgress size={24} /> : 'Create Track'}
             </Button>
           </Grid>
         </Grid>

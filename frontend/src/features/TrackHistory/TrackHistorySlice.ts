@@ -1,6 +1,6 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {TrackHistory} from '../../types';
-import {getTrackToHistory, postTrackToHistory} from './TrackHistoryThunks';
+import { createSlice } from '@reduxjs/toolkit';
+import { TrackHistory } from '../../types';
+import { getTrackToHistory, postTrackToHistory } from './TrackHistoryThunks';
 
 export interface tracksHistoryState {
   isLoading: boolean;
@@ -19,11 +19,11 @@ const TracksHistorySlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(postTrackToHistory.pending, (state, {meta: {arg: id} }) => {
+    builder.addCase(postTrackToHistory.pending, (state, { meta: { arg: id } }) => {
       state.addLoading = id;
     });
     builder.addCase(postTrackToHistory.fulfilled, (state) => {
-      state.addLoading= false;
+      state.addLoading = false;
     });
     builder.addCase(postTrackToHistory.rejected, (state) => {
       state.addLoading = false;
@@ -31,7 +31,7 @@ const TracksHistorySlice = createSlice({
     builder.addCase(getTrackToHistory.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(getTrackToHistory.fulfilled, (state, {payload: trackHistory}) => {
+    builder.addCase(getTrackToHistory.fulfilled, (state, { payload: trackHistory }) => {
       state.trackHistory = trackHistory;
       state.isLoading = false;
     });
@@ -46,11 +46,6 @@ const TracksHistorySlice = createSlice({
   },
 });
 
-
 export const TracksHistoryReducer = TracksHistorySlice.reducer;
 
-export const {
-  selectTrackHistory,
-  selectHistoryFetching,
-  selectAddTrackHistory
-} = TracksHistorySlice.selectors;
+export const { selectTrackHistory, selectHistoryFetching, selectAddTrackHistory } = TracksHistorySlice.selectors;

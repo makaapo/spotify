@@ -1,8 +1,8 @@
-import {Container, Divider, Typography} from '@mui/material';
-import {useNavigate} from 'react-router-dom';
-import {useAppDispatch} from '../../../app/hooks';
-import {TrackMutation} from '../../../types';
-import {createTrack} from '../tracksThunks';
+import { Container, Divider, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../../app/hooks';
+import { TrackMutation } from '../../../types';
+import { createTrack } from '../tracksThunks';
 import TrackForm from '../components/TrackForm/TrackForm';
 
 const NewTrack = () => {

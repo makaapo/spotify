@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {GlobalError, User, ValidationError} from '../../types';
-import {googleLogin, login, register} from './usersThunks';
-
+import { GlobalError, User, ValidationError } from '../../types';
+import { googleLogin, login, register } from './usersThunks';
 
 interface UsersState {
   user: User | null;
@@ -81,9 +80,5 @@ export const usersReducer = usersSlice.reducer;
 
 export const { unsetUser } = usersSlice.actions;
 
-export const {
-  selectUser,
-  selectRegisterLoading,
-  selectRegisterError,
-  selectLoginLoading,
-  selectLoginError } = usersSlice.selectors;
+export const { selectUser, selectRegisterLoading, selectRegisterError, selectLoginLoading, selectLoginError } =
+  usersSlice.selectors;

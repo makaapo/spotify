@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { Container, Divider, Typography } from '@mui/material';
-import {AlbumMutation} from '../../../../types';
-import {useAppDispatch} from '../../../../app/hooks';
-import {createAlbum} from '../../albumThunks';
+import { AlbumMutation } from '../../../../types';
+import { useAppDispatch } from '../../../../app/hooks';
+import { createAlbum } from '../../albumThunks';
 import AlbumForm from '../AlbumForm/AlbumForm';
 
 const NewAlbum = () => {

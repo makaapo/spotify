@@ -1,8 +1,7 @@
 import axios from 'axios';
-import {API_URL} from './contans';
-import {RootState} from './app/store';
-import {Store} from '@reduxjs/toolkit';
-
+import { API_URL } from './contans';
+import { RootState } from './app/store';
+import { Store } from '@reduxjs/toolkit';
 
 const axiosApi = axios.create({
   baseURL: API_URL,
@@ -19,6 +18,5 @@ export const addInterceptors = (store: Store<RootState>) => {
     return request;
   });
 };
-
 
 export default axiosApi;

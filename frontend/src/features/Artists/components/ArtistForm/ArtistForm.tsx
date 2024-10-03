@@ -1,8 +1,8 @@
-import {Box, Button, CircularProgress, Grid, TextField} from '@mui/material';
+import { Box, Button, CircularProgress, Grid, TextField } from '@mui/material';
 import React, { useState } from 'react';
-import {ArtistMutation} from '../../../../types';
-import {useAppSelector} from '../../../../app/hooks';
-import {selectArtistCreateLoading} from '../../artistsSlice';
+import { ArtistMutation } from '../../../../types';
+import { useAppSelector } from '../../../../app/hooks';
+import { selectArtistCreateLoading } from '../../artistsSlice';
 import FileInput from '../../../../UI/FileInput/FileInput';
 
 interface Props {
@@ -18,15 +18,15 @@ const ArtistForm: React.FC<Props> = ({ onSubmit }) => {
   });
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
     setState((prevState) => {
-      return {...prevState, [name]: value};
+      return { ...prevState, [name]: value };
     });
   };
 
   const fileInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, files} = e.target;
+    const { name, files } = e.target;
     if (files) {
       setState((prevState) => ({
         ...prevState,
@@ -68,15 +68,11 @@ const ArtistForm: React.FC<Props> = ({ onSubmit }) => {
             />
           </Grid>
           <Grid item xs={6}>
-            <FileInput
-              name="image"
-              label="Image"
-              onChange={fileInputChangeHandler}
-            />
+            <FileInput name="image" label="Image" onChange={fileInputChangeHandler} />
           </Grid>
           <Grid item xs={3} textAlign="right">
-            <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} disabled={creating}>
-              {creating ? <CircularProgress size={24}/> : 'Create Artist'}
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={creating}>
+              {creating ? <CircularProgress size={24} /> : 'Create Artist'}
             </Button>
           </Grid>
         </Grid>

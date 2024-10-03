@@ -1,19 +1,19 @@
-import React, {useCallback} from 'react';
-import {Card, CardMedia, CardActionArea, Typography, Box} from '@mui/material';
-import {NavLink} from 'react-router-dom';
-import {Album} from '../../../../types';
-import {API_URL} from '../../../../contans';
+import React, { useCallback } from 'react';
+import { Card, CardMedia, CardActionArea, Typography, Box } from '@mui/material';
+import { NavLink } from 'react-router-dom';
+import { Album } from '../../../../types';
+import { API_URL } from '../../../../contans';
 import NoAlbumImage from '../../../../assets/no-album-image.webp';
-import {useAppDispatch, useAppSelector} from '../../../../app/hooks';
-import {selectAlbumDeleteLoading, selectAlbumPublishLoading} from '../../albumSlice';
-import {deleteAlbum, getAlbumsByArtist, publishAlbum} from '../../albumThunks';
+import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import { selectAlbumDeleteLoading, selectAlbumPublishLoading } from '../../albumSlice';
+import { deleteAlbum, getAlbumsByArtist, publishAlbum } from '../../albumThunks';
 import MenuCard from '../../../../components/MenuForUser/MenuCard/MenuCard';
 
 interface Props {
   album: Album;
 }
 
-const AlbumCard: React.FC<Props> = ({album}) => {
+const AlbumCard: React.FC<Props> = ({ album }) => {
   const dispatch = useAppDispatch();
   const publishLoading = useAppSelector(selectAlbumPublishLoading);
   const deleteLoading = useAppSelector(selectAlbumDeleteLoading);
@@ -88,17 +88,10 @@ const AlbumCard: React.FC<Props> = ({album}) => {
             mt: 1,
           }}
         >
-          <Typography
-            variant="h6"
-            sx={{fontWeight: 'bold'}}
-          >
+          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
             {album.title}
           </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            textAlign="center"
-          >
+          <Typography variant="body2" color="text.secondary" textAlign="center">
             {album.release}
           </Typography>
         </Box>

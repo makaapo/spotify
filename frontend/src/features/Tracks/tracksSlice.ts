@@ -1,7 +1,6 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {Track} from '../../types';
-import {createTrack, deleteTrack, getTracksByAlbum, publishTrack} from './tracksThunks';
-
+import { createSlice } from '@reduxjs/toolkit';
+import { Track } from '../../types';
+import { createTrack, deleteTrack, getTracksByAlbum, publishTrack } from './tracksThunks';
 
 interface tracksState {
   tracks: Track[];
@@ -27,7 +26,7 @@ const TracksSlice = createSlice({
     builder.addCase(getTracksByAlbum.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(getTracksByAlbum.fulfilled, (state, {payload: tracks}) => {
+    builder.addCase(getTracksByAlbum.fulfilled, (state, { payload: tracks }) => {
       state.isLoading = false;
       state.tracks = tracks;
     });
@@ -70,12 +69,11 @@ const TracksSlice = createSlice({
   selectors: {
     selectTracks: (state) => state.tracks,
     selectTracksFetching: (state) => state.isLoading,
-    selectTrackPublishLoading: state => state.publishLoading,
-    selectTrackDeleteLoading: state => state.deleteLoading,
-    selectTrackCreateLoading: state => state.createLoading,
+    selectTrackPublishLoading: (state) => state.publishLoading,
+    selectTrackDeleteLoading: (state) => state.deleteLoading,
+    selectTrackCreateLoading: (state) => state.createLoading,
   },
 });
-
 
 export const TracksReducer = TracksSlice.reducer;
 
@@ -85,5 +83,4 @@ export const {
   selectTrackPublishLoading,
   selectTrackDeleteLoading,
   selectTrackCreateLoading,
-
 } = TracksSlice.selectors;

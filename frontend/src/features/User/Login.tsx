@@ -1,17 +1,16 @@
-import React, {useState} from 'react';
-import {Alert, Avatar, Box, Button, CircularProgress, Grid, Link, TextField, Typography} from '@mui/material';
+import React, { useState } from 'react';
+import { Alert, Avatar, Box, Button, CircularProgress, Grid, Link, TextField, Typography } from '@mui/material';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import {Link as RouterLink, useNavigate} from 'react-router-dom';
-import {LoginMutation} from '../../types';
-import {useAppDispatch, useAppSelector} from '../../app/hooks';
-import {selectLoginError, selectLoginLoading} from './usersSlice';
-import {login} from './usersThunks';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { LoginMutation } from '../../types';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectLoginError, selectLoginLoading } from './usersSlice';
+import { login } from './usersThunks';
 import LoginGoogle from './components/LoginGoogle';
-
 
 const Login = () => {
   const dispatch = useAppDispatch();
-  const error = useAppSelector(selectLoginError)
+  const error = useAppSelector(selectLoginError);
   const navigate = useNavigate();
   const isLoading = useAppSelector(selectLoginLoading);
 
@@ -20,9 +19,8 @@ const Login = () => {
     password: '',
   });
 
-
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     setState((prevState) => ({
       ...prevState,
       [name]: value,
@@ -39,7 +37,6 @@ const Login = () => {
     navigate('/');
   };
 
-
   return (
     <Box
       sx={{
@@ -49,14 +46,14 @@ const Login = () => {
         alignItems: 'center',
       }}
     >
-      <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
         <LockOpenIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
         Sign in
       </Typography>
       {error && (
-        <Alert severity="error" sx={{mt: 3}}>
+        <Alert severity="error" sx={{ mt: 3 }}>
           {error.error}
         </Alert>
       )}
@@ -87,8 +84,8 @@ const Login = () => {
             />
           </Grid>
         </Grid>
-        <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} disabled={isLoading}>
-          {isLoading ? <CircularProgress size={24}/> : 'Sign in'}
+        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={isLoading}>
+          {isLoading ? <CircularProgress size={24} /> : 'Sign in'}
         </Button>
         <Link component={RouterLink} to="/register" variant="body2">
           Don't have an account? Sign up.

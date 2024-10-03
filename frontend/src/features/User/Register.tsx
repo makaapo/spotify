@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import {Avatar, Box, Button, Grid, TextField, Typography, Link, CircularProgress} from '@mui/material';
+import { Avatar, Box, Button, Grid, TextField, Typography, Link, CircularProgress } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import {Link as RouterLink, useNavigate} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from '../../app/hooks';
-import {RegisterMutation} from '../../types';
-import {register} from './usersThunks';
-import {selectRegisterError, selectRegisterLoading} from './usersSlice';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { RegisterMutation } from '../../types';
+import { register } from './usersThunks';
+import { selectRegisterError, selectRegisterLoading } from './usersSlice';
 import FileInput from '../../UI/FileInput/FileInput';
 import LoginGoogle from './components/LoginGoogle';
-
 
 const Register = () => {
   const dispatch = useAppDispatch();
@@ -28,7 +27,7 @@ const Register = () => {
   };
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     setState((prevState) => ({
       ...prevState,
       [name]: value,
@@ -46,7 +45,7 @@ const Register = () => {
   };
 
   const fileInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, files} = e.target;
+    const { name, files } = e.target;
     if (files) {
       setState((prevState) => ({
         ...prevState,
@@ -64,7 +63,7 @@ const Register = () => {
         alignItems: 'center',
       }}
     >
-      <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
@@ -114,15 +113,11 @@ const Register = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <FileInput
-              label="Avatar"
-              name="avatar"
-              onChange={fileInputChangeHandler}
-            />
+            <FileInput label="Avatar" name="avatar" onChange={fileInputChangeHandler} />
           </Grid>
         </Grid>
-        <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} disabled={isCreating}>
-          {isCreating ? <CircularProgress size={24}/> : 'Sign up'}
+        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={isCreating}>
+          {isCreating ? <CircularProgress size={24} /> : 'Sign up'}
         </Button>
         <Link component={RouterLink} to="/login" variant="body2">
           Already have an account? Sign in

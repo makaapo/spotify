@@ -1,8 +1,8 @@
-import mongoose, {Schema, Types} from 'mongoose';
-import User from "./User";
-import Track from "./Track";
-import {randomUUID} from 'node:crypto';
-import {TrackHistoryFields, TrackHistoryMethods, TrackHistoryModel} from '../types';
+import mongoose, { Schema, Types } from 'mongoose';
+import User from './User';
+import Track from './Track';
+import { randomUUID } from 'node:crypto';
+import { TrackHistoryFields, TrackHistoryMethods, TrackHistoryModel } from '../types';
 
 const TrackHistorySchema = new Schema<TrackHistoryFields, TrackHistoryModel, TrackHistoryMethods>({
   user: {
@@ -15,9 +15,8 @@ const TrackHistorySchema = new Schema<TrackHistoryFields, TrackHistoryModel, Tra
         return Boolean(user);
       },
       message: 'User does not exist',
-    }
+    },
   },
-
   track: {
     type: Schema.Types.ObjectId,
     ref: 'Track',
@@ -28,7 +27,7 @@ const TrackHistorySchema = new Schema<TrackHistoryFields, TrackHistoryModel, Tra
         return Boolean(track);
       },
       message: 'Track does not exist',
-    }
+    },
   },
   datetime: {
     type: Date,
@@ -37,7 +36,7 @@ const TrackHistorySchema = new Schema<TrackHistoryFields, TrackHistoryModel, Tra
   token: {
     type: String,
     required: true,
-  }
+  },
 });
 
 TrackHistorySchema.methods.generateToken = function () {

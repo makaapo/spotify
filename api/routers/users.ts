@@ -2,16 +2,16 @@ import express from 'express';
 import User from '../models/User';
 import mongoose from 'mongoose';
 import config from '../config';
-import {OAuth2Client} from 'google-auth-library';
-import {imagesUpload} from '../multer';
+import { OAuth2Client } from 'google-auth-library';
+import { imagesUpload } from '../multer';
 
 const usersRouter = express.Router();
 const googleClient = new OAuth2Client(config.google.clientId);
 
-usersRouter.post('/', imagesUpload.single("avatar"), async (req, res, next) => {
+usersRouter.post('/', imagesUpload.single('avatar'), async (req, res, next) => {
   try {
     if (!req.body.username || !req.body.password) {
-      return res.status(400).send({error: 'Username and password are required!'});
+      return res.status(400).send({ error: 'Username and password are required!' });
     }
     const user = new User({
       username: req.body.username,
@@ -67,7 +67,7 @@ usersRouter.post('/google', async (req, res, next) => {
     const payload = ticket.getPayload();
 
     if (!payload) {
-      return res.status(400).send({error: 'Google Login Error!'});
+      return res.status(400).send({ error: 'Google Login Error!' });
     }
 
     const email = payload.email;
@@ -76,10 +76,10 @@ usersRouter.post('/google', async (req, res, next) => {
     const avatar = payload['picture'];
 
     if (!email) {
-      return res.status(400).send({error: 'Not enough user data to continue!'});
+      return res.status(400).send({ error: 'Not enough user data to continue!' });
     }
 
-    let user = await User.findOne({googleID: id});
+    let user = await User.findOne({ googleID: id });
 
     if (!user) {
       const newPassword = crypto.randomUUID();
@@ -110,7 +110,7 @@ usersRouter.delete('/sessions', async (req, res, next) => {
 
     if (!token) return res.status(204).send();
 
-    const user = await User.findOne({token});
+    const user = await User.findOne({ token });
 
     if (!user) return res.status(204).send();
 
@@ -123,4 +123,4 @@ usersRouter.delete('/sessions', async (req, res, next) => {
   }
 });
 
-export default usersRouter
+export default usersRouter;

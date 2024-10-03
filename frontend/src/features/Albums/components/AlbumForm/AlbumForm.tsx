@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import {Box, Button, CircularProgress, Grid, MenuItem, TextField} from '@mui/material';
-import {AlbumMutation} from '../../../../types';
-import {useAppDispatch, useAppSelector} from '../../../../app/hooks';
-import {selectArtists} from '../../../Artists/artistsSlice';
-import {selectAlbumCreateLoading} from '../../albumSlice';
-import {getArtists} from '../../../Artists/artistsThunks';
+import { Box, Button, CircularProgress, Grid, MenuItem, TextField } from '@mui/material';
+import { AlbumMutation } from '../../../../types';
+import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import { selectArtists } from '../../../Artists/artistsSlice';
+import { selectAlbumCreateLoading } from '../../albumSlice';
+import { getArtists } from '../../../Artists/artistsThunks';
 import FileInput from '../../../../UI/FileInput/FileInput';
-
 
 interface Props {
   onSubmit: (state: AlbumMutation) => void;
@@ -28,14 +27,14 @@ const AlbumForm: React.FC<Props> = ({ onSubmit }) => {
   }, [dispatch]);
 
   const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     setState((prevState) => {
-      return {...prevState, [name]: value};
+      return { ...prevState, [name]: value };
     });
   };
 
   const fileInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, files} = e.target;
+    const { name, files } = e.target;
     if (files) {
       setState((prevState) => ({
         ...prevState,
@@ -97,15 +96,11 @@ const AlbumForm: React.FC<Props> = ({ onSubmit }) => {
             />
           </Grid>
           <Grid item xs={6}>
-            <FileInput
-              name="image"
-              label="Image"
-              onChange={fileInputChangeHandler}
-            />
+            <FileInput name="image" label="Image" onChange={fileInputChangeHandler} />
           </Grid>
           <Grid item xs={3} textAlign="right">
-            <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}} disabled={creating}>
-              {creating ? <CircularProgress size={24}/> : 'Create Album'}
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={creating}>
+              {creating ? <CircularProgress size={24} /> : 'Create Album'}
             </Button>
           </Grid>
         </Grid>

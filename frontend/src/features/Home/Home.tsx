@@ -1,10 +1,9 @@
 import Artists from '../Artists/Artists';
 
 const Home = () => {
-
   return (
     <>
-      <Artists/>
+      <Artists />
     </>
   );
 };

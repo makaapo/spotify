@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
-import {getArtists} from './artistsThunks';
-import {CircularProgress, Grid, Typography, Box} from '@mui/material';
+import React, { useEffect } from 'react';
+import { getArtists } from './artistsThunks';
+import { CircularProgress, Grid, Typography, Box } from '@mui/material';
 import ArtistCard from './components/ArtistCard/ArtistCard';
-import {useAppDispatch, useAppSelector} from '../../app/hooks';
-import {selectArtists, selectArtistsFetching} from './artistsSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectArtists, selectArtistsFetching } from './artistsSlice';
 
 const Artists: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -22,14 +22,17 @@ const Artists: React.FC = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            minHeight: '100vh'
-        }}>
+            minHeight: '100vh',
+          }}
+        >
           <CircularProgress />
         </Box>
       ) : (
         <>
           {artists.length === 0 ? (
-            <Typography variant="body1" align="center">No artists yet</Typography>
+            <Typography variant="body1" align="center">
+              No artists yet
+            </Typography>
           ) : (
             <Grid container spacing={3}>
               {artists.map((artist) => (

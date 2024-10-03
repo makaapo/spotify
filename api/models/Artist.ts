@@ -1,4 +1,4 @@
-import mongoose, {Schema, Types} from 'mongoose';
+import mongoose, { Schema, Types } from 'mongoose';
 import User from './User';
 
 const ArtistSchema = new mongoose.Schema({
@@ -12,8 +12,9 @@ const ArtistSchema = new mongoose.Schema({
         return Boolean(user);
       },
       message: 'User does not exist',
-    }
+    },
   },
+
   title: {
     type: String,
     required: true,

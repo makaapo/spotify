@@ -2,7 +2,7 @@ import { Container, Divider, Typography } from '@mui/material';
 import { ArtistMutation } from '../../../types';
 import { useAppDispatch } from '../../../app/hooks';
 import { useNavigate } from 'react-router-dom';
-import {createArtist} from '../artistsThunks';
+import { createArtist } from '../artistsThunks';
 import ArtistForm from '../components/ArtistForm/ArtistForm';
 
 const NewArtist = () => {

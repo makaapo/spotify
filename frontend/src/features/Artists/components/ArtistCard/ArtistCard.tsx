@@ -1,19 +1,19 @@
-import React, {useCallback} from 'react';
-import {Card, CardMedia, CardActionArea, Typography, Box} from '@mui/material';
-import {NavLink} from 'react-router-dom';
-import {Artist} from '../../../../types';
-import {API_URL} from '../../../../contans';
+import React, { useCallback } from 'react';
+import { Card, CardMedia, CardActionArea, Typography, Box } from '@mui/material';
+import { NavLink } from 'react-router-dom';
+import { Artist } from '../../../../types';
+import { API_URL } from '../../../../contans';
 import NoArtistImage from '../../../../assets/noartistimage.webp';
-import {useAppDispatch, useAppSelector} from '../../../../app/hooks';
-import {selectArtistDeleteLoading, selectArtistPublishLoading} from '../../artistsSlice';
-import {deleteArtist, getArtists, publishArtist} from '../../artistsThunks';
+import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import { selectArtistDeleteLoading, selectArtistPublishLoading } from '../../artistsSlice';
+import { deleteArtist, getArtists, publishArtist } from '../../artistsThunks';
 import MenuCard from '../../../../components/MenuForUser/MenuCard/MenuCard';
 
 interface Props {
   artist: Artist;
 }
 
-const ArtistCard: React.FC<Props> = ({artist}) => {
+const ArtistCard: React.FC<Props> = ({ artist }) => {
   const dispatch = useAppDispatch();
   const publishLoading = useAppSelector(selectArtistPublishLoading);
   const deleteLoading = useAppSelector(selectArtistDeleteLoading);
@@ -67,10 +67,7 @@ const ArtistCard: React.FC<Props> = ({artist}) => {
             flexGrow: 1,
           }}
         >
-          <Typography
-            variant="h6"
-            sx={{fontWeight: 'bold'}}
-          >
+          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
             {artist.title}
           </Typography>
         </Box>

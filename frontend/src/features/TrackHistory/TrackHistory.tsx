@@ -1,12 +1,11 @@
-import {useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from '../../app/hooks';
-import {selectUser} from '../User/usersSlice';
-import {selectHistoryFetching, selectTrackHistory} from './TrackHistorySlice';
-import {getTrackToHistory} from './TrackHistoryThunks';
-import {CircularProgress, Typography} from '@mui/material';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectUser } from '../User/usersSlice';
+import { selectHistoryFetching, selectTrackHistory } from './TrackHistorySlice';
+import { getTrackToHistory } from './TrackHistoryThunks';
+import { CircularProgress, Typography } from '@mui/material';
 import TrackHistoryCard from './сomponents/TrackHistoryCard';
-
 
 const TrackHistory = () => {
   const dispatch = useAppDispatch();
@@ -25,19 +24,21 @@ const TrackHistory = () => {
 
   return (
     <div className="container">
-      {loading ? <CircularProgress /> :
+      {loading ? (
+        <CircularProgress />
+      ) : (
         <>
           {trackHistory && trackHistory.length > 0 ? (
             trackHistory.map((trackFromHistory) => (
-              <TrackHistoryCard key={trackFromHistory._id} trackHistory={trackFromHistory}/>
+              <TrackHistoryCard key={trackFromHistory._id} trackHistory={trackFromHistory} />
             ))
           ) : (
-            <Typography variant="subtitle1" textAlign="center" sx={{flexGrow: 1}}>
+            <Typography variant="subtitle1" textAlign="center" sx={{ flexGrow: 1 }}>
               Tracks history not available
             </Typography>
           )}
         </>
-      }
+      )}
     </div>
   );
 };

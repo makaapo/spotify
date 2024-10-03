@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.ts",
-    "seed": "ts-node fixtures.ts"
+    "seed": "ts-node fixtures.ts",
+    "format:check": "prettier --check .",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",
@@ -26,6 +28,7 @@
     "@types/multer": "^1.4.12",
     "@types/node": "^22.5.2",
     "nodemon": "^3.1.4",
+    "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   }

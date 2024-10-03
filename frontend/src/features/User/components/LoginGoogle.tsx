@@ -1,7 +1,7 @@
-import {googleLogin} from '../usersThunks';
-import {useNavigate} from 'react-router-dom';
-import {useAppDispatch} from '../../../app/hooks';
-import {CredentialResponse, GoogleLogin} from '@react-oauth/google';
+import { googleLogin } from '../usersThunks';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../../app/hooks';
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 const LoginGoogle = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

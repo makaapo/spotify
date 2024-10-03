@@ -1,13 +1,13 @@
-import React, {useCallback} from 'react';
-import {Box, Card, CircularProgress, Grid, IconButton, Typography} from '@mui/material';
-import {Track} from '../../../../types';
-import {useAppDispatch, useAppSelector } from '../../../../app/hooks';
-import {postTrackToHistory } from '../../../TrackHistory/TrackHistoryThunks';
-import {selectUser} from '../../../User/usersSlice';
+import React, { useCallback } from 'react';
+import { Box, Card, CircularProgress, Grid, IconButton, Typography } from '@mui/material';
+import { Track } from '../../../../types';
+import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import { postTrackToHistory } from '../../../TrackHistory/TrackHistoryThunks';
+import { selectUser } from '../../../User/usersSlice';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import {selectAddTrackHistory} from '../../../TrackHistory/TrackHistorySlice';
-import {selectTrackDeleteLoading, selectTrackPublishLoading} from '../../tracksSlice';
-import {deleteTrack, getTracksByAlbum, publishTrack} from '../../tracksThunks';
+import { selectAddTrackHistory } from '../../../TrackHistory/TrackHistorySlice';
+import { selectTrackDeleteLoading, selectTrackPublishLoading } from '../../tracksSlice';
+import { deleteTrack, getTracksByAlbum, publishTrack } from '../../tracksThunks';
 import MenuCard from '../../../../components/MenuForUser/MenuCard/MenuCard';
 
 interface Props {
@@ -84,33 +84,24 @@ const TrackCard: React.FC<Props> = ({ track }) => {
         }}
       >
         <Grid item>
-          <Typography
-            variant="h6"
-            component="h5"
-            sx={{ fontWeight: 'bold' }}
-          >
+          <Typography variant="h6" component="h5" sx={{ fontWeight: 'bold' }}>
             #{track.number} - {track.title}
           </Typography>
         </Grid>
         <Grid item>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ mt: 1 }}
-          >
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
             Duration: {track.duration}
           </Typography>
         </Grid>
         <Grid item>
-          {user && (
-            isAddingTrackHistory === track._id ? (
+          {user &&
+            (isAddingTrackHistory === track._id ? (
               <CircularProgress size={30} />
             ) : (
               <IconButton onClick={() => clickHandler(track._id)}>
-                <PlayCircleIcon sx={{color: 'seagreen', fontSize: 40}} />
+                <PlayCircleIcon sx={{ color: 'seagreen', fontSize: 40 }} />
               </IconButton>
-            )
-          )}
+            ))}
         </Grid>
       </Grid>
     </Card>
