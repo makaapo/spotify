@@ -1,6 +1,6 @@
 import {User} from '../../types';
 import React, {useState} from 'react';
-import {Avatar, Button, Grid, Menu, MenuItem} from '@mui/material';
+import {Avatar, Grid, IconButton, Menu, MenuItem, Stack, Typography} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import RestoreIcon from '@mui/icons-material/Restore';
 import {logout} from '../../features/User/usersThunks';
@@ -28,7 +28,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
 
   const handleClose = () => {
     setAnchorEl(null);
-  }
+  };
 
   const handleLogout = async () => {
     await dispatch(logout());
@@ -37,12 +37,22 @@ const UserMenu: React.FC<Props> = ({user}) => {
 
   return (
     <Grid item>
-      <Button onClick={handleClick} sx={{ display: 'flex', gap: 1 }} color="inherit">
-        <Avatar alt={user.displayName} src={`${API_URL}/${user.avatar}`} sx={{ width: 24, height: 24 }} />
-        Hello, {user.displayName}
-      </Button>
+      <Stack direction="row" alignItems="center">
+        <Typography>{user.displayName}</Typography>
+        <IconButton
+          onClick={handleClick}
+          sx={{ display: 'flex', gap: 1 }}
+          disableRipple
+        >
+          <Avatar
+            alt={user.displayName}
+            src={`${API_URL}/${user.avatar}`}
+            sx={{ width: 24, height: 24 }}
+          />
+        </IconButton>
+      </Stack>
       <Menu open={isOpen} anchorEl={anchorEl} onClose={handleClose} keepMounted>
-        <MenuItem onClick={() => navigate('/track/new')}>
+      <MenuItem onClick={() => navigate('/track/new')}>
           <MusicNoteIcon sx={{mr: 2}} />
           New Track
         </MenuItem>

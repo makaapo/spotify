@@ -8,7 +8,7 @@ import {imagesUpload} from '../multer';
 const usersRouter = express.Router();
 const googleClient = new OAuth2Client(config.google.clientId);
 
-usersRouter.post('/', async (req, res, next) => {
+usersRouter.post('/', imagesUpload.single("avatar"), async (req, res, next) => {
   try {
     if (!req.body.username || !req.body.password) {
       return res.status(400).send({error: 'Username and password are required!'});
@@ -19,7 +19,6 @@ usersRouter.post('/', async (req, res, next) => {
       displayName: req.body.displayName,
       avatar: req.file ? req.file.filename : null,
     });
-
 
     user.generateToken();
     await user.save();
@@ -58,7 +57,7 @@ usersRouter.post('/sessions', async (req, res, next) => {
   }
 });
 
-usersRouter.post('/google', imagesUpload.single('avatar'), async (req, res, next) => {
+usersRouter.post('/google', async (req, res, next) => {
   try {
     const ticket = await googleClient.verifyIdToken({
       idToken: req.body.credential,

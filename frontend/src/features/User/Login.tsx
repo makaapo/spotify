@@ -5,8 +5,8 @@ import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {LoginMutation} from '../../types';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {selectLoginError, selectLoginLoading} from './usersSlice';
-import {googleLogin, login} from './usersThunks';
-import {CredentialResponse, GoogleLogin} from '@react-oauth/google';
+import {login} from './usersThunks';
+import LoginGoogle from './components/LoginGoogle';
 
 
 const Login = () => {
@@ -39,12 +39,6 @@ const Login = () => {
     navigate('/');
   };
 
-  const googleLoginHandler = async (credentialResponse: CredentialResponse) => {
-    if (credentialResponse.credential) {
-      await dispatch(googleLogin(credentialResponse.credential)).unwrap();
-      navigate('/');
-    }
-  };
 
   return (
     <Box
@@ -66,13 +60,8 @@ const Login = () => {
           {error.error}
         </Alert>
       )}
-      <Box sx={{pt: 2}}>
-        <GoogleLogin
-          onSuccess={googleLoginHandler}
-          onError={() => {
-            console.log('Login Failed');
-          }}
-        />
+      <Box>
+        <LoginGoogle />
       </Box>
       <Box component="form" onSubmit={submitFormHandler} sx={{ mt: 3 }}>
         <Grid container direction="column" spacing={2}>

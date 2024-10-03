@@ -7,6 +7,7 @@ import {RegisterMutation} from '../../types';
 import {register} from './usersThunks';
 import {selectRegisterError, selectRegisterLoading} from './usersSlice';
 import FileInput from '../../UI/FileInput/FileInput';
+import LoginGoogle from './components/LoginGoogle';
 
 
 const Register = () => {
@@ -69,6 +70,9 @@ const Register = () => {
       <Typography component="h1" variant="h5">
         Sign up
       </Typography>
+      <Box>
+        <LoginGoogle />
+      </Box>
       <Box component="form" noValidate onSubmit={submitFormHandler} sx={{ mt: 3 }}>
         <Grid container direction="column" spacing={2}>
           <Grid item>
