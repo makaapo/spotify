@@ -13,11 +13,13 @@ const UserSchema = new Schema<UserFields, UserModel, UserMethods>({
     type: String,
     required: true,
     unique: true,
+    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,5})+$/, 'Please fill a valid email address'],
     validate: {
       validator: async function(value: string): Promise<boolean> {
         if (!(this as HydratedDocument<UserFields>).isModified('username')) {
           return true;
         }
+
         const user = await User.findOne({username: value});
         return !user;
       },
@@ -38,6 +40,12 @@ const UserSchema = new Schema<UserFields, UserModel, UserMethods>({
     enum: ['user', 'admin'],
     default: 'user',
   },
+  displayName: {
+    type: String,
+    required: [true, 'Name must be provided!'],
+  },
+  googleID: String,
+  avatar: String,
 });
 
 UserSchema.methods.checkPassword = function (password: string) {

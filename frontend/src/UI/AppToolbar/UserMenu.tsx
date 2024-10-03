@@ -1,6 +1,6 @@
 import {User} from '../../types';
 import React, {useState} from 'react';
-import {Button, Grid, Menu, MenuItem} from '@mui/material';
+import {Avatar, Button, Grid, Menu, MenuItem} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import RestoreIcon from '@mui/icons-material/Restore';
 import {logout} from '../../features/User/usersThunks';
@@ -10,6 +10,7 @@ import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import SpatialAudioOffIcon from '@mui/icons-material/SpatialAudioOff';
 import {getArtists} from '../../features/Artists/artistsThunks';
+import {API_URL} from '../../contans';
 
 interface Props {
   user: User;
@@ -36,8 +37,9 @@ const UserMenu: React.FC<Props> = ({user}) => {
 
   return (
     <Grid item>
-      <Button onClick={handleClick} color="inherit">
-        Hello, {user.username}
+      <Button onClick={handleClick} sx={{ display: 'flex', gap: 1 }} color="inherit">
+        <Avatar alt={user.displayName} src={`${API_URL}/${user.avatar}`} sx={{ width: 24, height: 24 }} />
+        Hello, {user.displayName}
       </Button>
       <Menu open={isOpen} anchorEl={anchorEl} onClose={handleClose} keepMounted>
         <MenuItem onClick={() => navigate('/track/new')}>

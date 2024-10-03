@@ -5,7 +5,8 @@ import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import {LoginMutation} from '../../types';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {selectLoginError, selectLoginLoading} from './usersSlice';
-import {login} from './usersThunks';
+import {googleLogin, login} from './usersThunks';
+import {CredentialResponse, GoogleLogin} from '@react-oauth/google';
 
 
 const Login = () => {
@@ -30,11 +31,18 @@ const Login = () => {
 
   const submitFormHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    try {
-      await dispatch(login(state)).unwrap();
+    const loginMutation = {
+      username: state.username.trim().toLowerCase(),
+      password: state.password.trim(),
+    };
+    await dispatch(login(loginMutation)).unwrap();
+    navigate('/');
+  };
+
+  const googleLoginHandler = async (credentialResponse: CredentialResponse) => {
+    if (credentialResponse.credential) {
+      await dispatch(googleLogin(credentialResponse.credential)).unwrap();
       navigate('/');
-    } catch (e) {
-      console.error('Login error:', e);
     }
   };
 
@@ -58,6 +66,14 @@ const Login = () => {
           {error.error}
         </Alert>
       )}
+      <Box sx={{pt: 2}}>
+        <GoogleLogin
+          onSuccess={googleLoginHandler}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+        />
+      </Box>
       <Box component="form" onSubmit={submitFormHandler} sx={{ mt: 3 }}>
         <Grid container direction="column" spacing={2}>
           <Grid item>

@@ -20,21 +20,24 @@ const run = async () => {
 
   const [user1, user2] = await User.create(
     {
-      username: 'malik',
+      username: 'malik@spotify.local',
       password: '221096',
       role: 'user',
+      displayName: 'Malik',
       token: crypto.randomUUID(),
     },
     {
-      username: 'makapo',
+      username: 'makapo@spotify.local',
       password: '12345',
       role: 'user',
+      displayName: 'Makap',
       token: crypto.randomUUID(),
     },
     {
-      username: 'admin',
+      username: 'admin@spotify.local',
       password: 'admin',
       role: 'admin',
+      displayName: 'Admin',
       token: crypto.randomUUID(),
     },
   );

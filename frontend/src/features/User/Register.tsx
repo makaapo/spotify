@@ -6,6 +6,7 @@ import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {RegisterMutation} from '../../types';
 import {register} from './usersThunks';
 import {selectRegisterError, selectRegisterLoading} from './usersSlice';
+import FileInput from '../../UI/FileInput/FileInput';
 
 
 const Register = () => {
@@ -17,6 +18,8 @@ const Register = () => {
   const [state, setState] = useState<RegisterMutation>({
     username: '',
     password: '',
+    displayName: '',
+    avatar: null,
   });
 
   const getFieldError = (fieldName: string) => {
@@ -38,6 +41,16 @@ const Register = () => {
       navigate('/');
     } catch (e) {
       console.error('Login error:', e);
+    }
+  };
+
+  const fileInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {name, files} = e.target;
+    if (files) {
+      setState((prevState) => ({
+        ...prevState,
+        [name]: files[0],
+      }));
     }
   };
 
@@ -70,6 +83,19 @@ const Register = () => {
               helperText={getFieldError('username')}
             />
           </Grid>
+          <Grid item xs={12}>
+            <TextField
+              name="displayName"
+              label="Name"
+              type="displayName"
+              value={state.displayName}
+              autoComplete="new-displayName"
+              fullWidth
+              onChange={inputChangeHandler}
+              error={Boolean(getFieldError('displayName'))}
+              helperText={getFieldError('displayName')}
+            />
+          </Grid>
           <Grid item>
             <TextField
               required
@@ -81,6 +107,13 @@ const Register = () => {
               onChange={inputChangeHandler}
               error={Boolean(getFieldError('password'))}
               helperText={getFieldError('password')}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FileInput
+              label="Avatar"
+              name="avatar"
+              onChange={fileInputChangeHandler}
             />
           </Grid>
         </Grid>
